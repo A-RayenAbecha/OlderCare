@@ -1,10 +1,14 @@
-import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import EmergencyInfoWidget from "@/components/EmergencyInfoWidget";
 import EmergencyRail from "@/components/EmergencyRail";
 import { addMedicationAction, updateMedicationAction } from "@/app/actions";
 import { requirePatient } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 const frequencyOptions = ["Chaque matin", "Chaque midi", "Chaque soir", "Au coucher", "Matin et soir", "1 fois par jour", "2 fois par jour", "3 fois par jour", "Toutes les 6 heures", "Toutes les 8 heures", "Toutes les 12 heures", "Chaque semaine", "Selon besoin"];
 

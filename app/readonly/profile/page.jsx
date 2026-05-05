@@ -1,10 +1,14 @@
-import Link from "next/link";
 import EmergencyInfoWidget from "@/components/EmergencyInfoWidget";
 import EmergencyRail from "@/components/EmergencyRail";
 import { unlockStaffAction } from "@/app/actions";
 import { requireReadOnly } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
 import { calculateAge, fullName, genderLabel } from "@/lib/format";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 export default async function ReadOnlyProfilePage({ searchParams }) {
   const session = await requireReadOnly();

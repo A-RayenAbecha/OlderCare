@@ -1,9 +1,13 @@
-import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import EmergencyInfoWidget from "@/components/EmergencyInfoWidget";
 import { requirePatient } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
 import { calculateAge, fullName, genderLabel, recordNumber, splitMedicalValues, splitValues } from "@/lib/format";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 export default async function MedicalProfilePage() {
   const userId = await requirePatient();

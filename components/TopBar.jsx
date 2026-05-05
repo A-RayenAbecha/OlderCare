@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { logoutAction } from "@/app/actions";
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 export default function TopBar({ active = "accueil", readonly = false, emergencyHref = "/dashboard/emergency-info" }) {
   return (

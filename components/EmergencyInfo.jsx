@@ -1,6 +1,7 @@
-import Link from "next/link";
 import Script from "next/script";
 import { fullName, sosMessage } from "@/lib/format";
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 export default function EmergencyInfo({ bundle, cancelUrl = "/dashboard", sosUrl = "/dashboard/sos" }) {
   const profile = bundle.profile || {};

@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function BottomNav({ active = "home", shared = true }) {
   const items = [
     { key: "home", href: "/dashboard", icon: "⌂", label: "Accueil" },
@@ -11,9 +9,9 @@ export default function BottomNav({ active = "home", shared = true }) {
   return (
     <nav className={shared ? "medical-mobile-nav shared-dashboard-nav" : "medical-mobile-nav"}>
       {items.map((item) => (
-        <Link key={item.key} className={active === item.key ? "active" : ""} href={item.href}>
+        <a key={item.key} className={active === item.key ? "active" : ""} href={item.href}>
           <span>{item.icon}</span>{item.label}
-        </Link>
+        </a>
       ))}
     </nav>
   );

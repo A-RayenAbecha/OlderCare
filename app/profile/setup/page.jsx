@@ -1,9 +1,13 @@
-import Link from "next/link";
 import Script from "next/script";
 import { saveContactAction, saveIdentityAction } from "@/app/actions";
 import { requirePatient } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
 import { defaultSosMessage, splitValues } from "@/lib/format";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 const nationalities = ["Tunisie", "Algérie", "Maroc", "France", "Italie", "Allemagne", "Espagne", "États-Unis", "Canada", "Albanie", "Autre"];
 const bloodTypes = ["Inconnu", "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"];

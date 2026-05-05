@@ -1,10 +1,14 @@
-import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import EmergencyInfoWidget from "@/components/EmergencyInfoWidget";
 import EmergencyRail from "@/components/EmergencyRail";
 import { addAppointmentAction } from "@/app/actions";
 import { requirePatient } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
 
 export default async function AppointmentsPage() {
   const userId = await requirePatient();
