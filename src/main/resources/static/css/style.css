@@ -75,7 +75,7 @@ button, input, select, textarea { font: inherit; }
   height: 36px;
   flex: 0 0 42px;
   border-radius: 10px;
-  background: #fff url("/images/oldercare-mark.png") center / contain no-repeat;
+  background: #fff url("/images/oldercare-logo-transparent.gif") center / contain no-repeat;
   box-shadow: 0 8px 20px rgba(21, 87, 245, .12);
 }
 
@@ -210,7 +210,7 @@ button, input, select, textarea { font: inherit; }
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #fff url("/images/oldercare-mark.png") center / cover no-repeat;
+  background: #fff url("/images/oldercare-logo-transparent.gif") center / cover no-repeat;
   border: 2px solid #fff;
   box-shadow: 0 4px 14px rgba(0,0,0,.18);
 }

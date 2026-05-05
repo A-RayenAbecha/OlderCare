@@ -10,7 +10,7 @@ export default function EmergencyInfo({ bundle, cancelUrl = "/dashboard", sosUrl
   return (
     <main className="emergency-info-page-shell" data-emergency-page>
       <div className="topbar dashboard-topbar emergency-info-topbar">
-        <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-mark.png" alt="OlderCare" /></strong>
+        <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" /></strong>
         <div className="top-actions">
           <Link className="profile-pill-link" href={cancelUrl}>Retour</Link>
           <Link className="emergency-menu-trigger emergency-page-menu" href={sosUrl} aria-label="SOS"><span>*</span></Link>

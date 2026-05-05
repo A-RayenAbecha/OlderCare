@@ -6,7 +6,7 @@ export default function TopBar({ active = "accueil", readonly = false, emergency
   return (
     <header className="topbar">
       <Link className="brand-logo-link" href={readonly ? "/readonly/profile" : "/dashboard"}>
-        <img src="/images/oldercare-mark.png" alt="OlderCare" />
+        <img src="/images/oldercare-logo-transparent.gif" alt="OlderCare" />
       </Link>
       <div className="bracelet-pill"><span /> Bracelet connecté</div>
       <nav className="top-actions">

@@ -21,7 +21,7 @@ export default async function MedicationsPage() {
       <EmergencyRail />
       <main className="app-shell dashboard-shell">
         <div className="topbar dashboard-topbar">
-          <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-mark.png" alt="OlderCare" /></strong>
+          <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" /></strong>
           <div className="bracelet-status-pill"><span /> Bracelet connecté</div>
           <div className="top-actions">
             <Link className="profile-pill-link" href="/dashboard">Accueil</Link>

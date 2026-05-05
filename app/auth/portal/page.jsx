@@ -20,12 +20,12 @@ export default async function PortalPage({ searchParams }) {
         <div className="topbar">
           <Link className="icon-button" href="/auth/logout">←</Link>
         <strong className="brand brand-with-video">
-          <img className="brand-logo-img" src="/images/oldercare-mark.png" alt="OlderCare" />
+          <img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" />
         </strong>
           <div className="bracelet-status-pill"><span /> Bracelet connecté</div>
         </div>
         <section className="content portal-access-page">
-          <img className="brand-wordmark brand-logo-wordmark" src="/images/oldercare-mark.png" alt="OlderCare" />
+          <img className="brand-wordmark brand-logo-wordmark" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" />
           <h1 className="title-lg">Choisir le<br />type d'accès</h1>
           <p className="subtitle">Sélectionnez qui utilise ce code bracelet.</p>
           <div className="portal-choice-grid">

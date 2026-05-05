@@ -10,7 +10,7 @@ export default async function WelcomePage() {
       <EmergencyRail />
       <main className="app-shell welcome-shell">
         <div className="topbar">
-          <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-mark.png" alt="OlderCare" /></strong>
+          <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" /></strong>
           <Link className="welcome-login-btn" href="/auth/login-code-page"><span>👤</span>Connexion</Link>
         </div>
         <section className="welcome-hero">
