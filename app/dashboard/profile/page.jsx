@@ -69,8 +69,6 @@ export default async function MedicalProfilePage() {
           </dl>
           <div className="medical-file-actions">
             <Link className="medical-outline-action" href="/dashboard/profile/pdf">📄 Télécharger PDF</Link>
-            <button className="medical-outline-action" type="button">🖨 Imprimer</button>
-            <button className="medical-primary-action" type="button">🔁 Partager</button>
           </div>
         </article>
 

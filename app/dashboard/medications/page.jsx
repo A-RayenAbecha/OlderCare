@@ -1,7 +1,7 @@
 import BottomNav from "@/components/BottomNav";
 import EmergencyInfoWidget from "@/components/EmergencyInfoWidget";
 import EmergencyRail from "@/components/EmergencyRail";
-import { addMedicationAction, updateMedicationAction } from "@/app/actions";
+import { addMedicationAction } from "@/app/actions";
 import { requirePatient } from "@/lib/auth";
 import { getPatientBundle } from "@/lib/data";
 
@@ -61,24 +61,19 @@ export default async function MedicationsPage() {
             {medications.length === 0 && <div className="dashboard-empty-card"><strong>Aucun médicament</strong><p>Aucun traitement n'est encore lié à ce dossier.</p></div>}
             <div className="dashboard-record-grid">
               {medications.map((medication) => (
-                <form className="dashboard-card dashboard-edit-card" key={medication.id} action={updateMedicationAction}>
-                  <input type="hidden" name="medicationId" value={medication.id} />
-                  <div className="dashboard-record-head">
-                    <div className="dashboard-date-badge">{medication.start_date ? new Date(medication.start_date).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" }) : "--/--"}</div>
-                    <div>
-                      <h3>{medication.name}</h3>
-                      <p>{medication.dosage || ""} - {medication.frequency || ""}</p>
-                    </div>
+                <article className="dashboard-card dashboard-appointment-card dashboard-medication-display-card" key={medication.id}>
+                  <div className="dashboard-date-badge tall">{medication.start_date ? new Date(medication.start_date).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" }) : "-- ---"}</div>
+                  <div>
+                    <h3>{medication.name || "Médicament"}</h3>
+                    <strong>{medication.dosage || "Dosage non renseigné"}</strong>
+                    <p>{medication.frequency || "Fréquence non renseignée"}</p>
+                    <small>
+                      Début : {medication.start_date ? new Date(medication.start_date).toLocaleDateString("fr-FR") : "non renseigné"}
+                      {medication.end_date ? ` - Fin : ${new Date(medication.end_date).toLocaleDateString("fr-FR")}` : ""}
+                    </small>
                   </div>
-                  <div className="dashboard-edit-fields">
-                    <div className="field"><label>Nom</label><input name="name" defaultValue={medication.name} required /></div>
-                    <div className="field"><label>Dosage</label><input name="dosage" defaultValue={medication.dosage || ""} required /></div>
-                    <div className="field"><label>Fréquence</label><select name="frequency" defaultValue={medication.frequency || ""} required>{frequencyOptions.map((item) => <option key={item} value={item}>{item}</option>)}</select></div>
-                    <div className="field"><label>Début</label><input type="date" name="startDate" defaultValue={medication.start_date ? String(medication.start_date).slice(0, 10) : ""} required /></div>
-                    <div className="field"><label>Fin</label><input type="date" name="endDate" defaultValue={medication.end_date ? String(medication.end_date).slice(0, 10) : ""} /></div>
-                  </div>
-                  <button className="dashboard-outline-btn">Mettre à jour</button>
-                </form>
+                  <span className="dashboard-status-pill">Traitement</span>
+                </article>
               ))}
             </div>
           </section>

@@ -5811,6 +5811,14 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
 }
 
 @media (min-width: 1101px) {
+  .dashboard-shell {
+    padding-bottom: 132px;
+  }
+
+  .dashboard-subpage {
+    padding-bottom: 36px;
+  }
+
   body.has-emergency-rail > .medical-mobile-nav.shared-dashboard-nav {
     left: 306px !important;
     right: 18px !important;

@@ -1,8 +1,9 @@
 (() => {
   const endpoints = [
-    'https://overpass-api.de/api/interpreter',
-    'https://overpass.kumi.systems/api/interpreter'
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://overpass-api.de/api/interpreter'
   ];
+  const overpassRequestTimeoutMs = 4500;
 
   const escapeHtml = value => String(value || '')
     .replaceAll('&', '&amp;')
@@ -48,7 +49,7 @@
   };
 
   const buildOverpassQuery = (lat, lng, radius) => `
-    [out:json][timeout:12];
+    [out:json][timeout:5];
     (
       node(around:${radius},${lat},${lng})["amenity"~"hospital|clinic|doctors"];
       way(around:${radius},${lat},${lng})["amenity"~"hospital|clinic|doctors"];
@@ -66,10 +67,13 @@
   const fetchOverpass = async query => {
     let lastError;
     for (const endpoint of endpoints) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), overpassRequestTimeoutMs);
       try {
         const response = await fetch(endpoint, {
           method: 'POST',
-          body: new URLSearchParams({ data: query })
+          body: new URLSearchParams({ data: query }),
+          signal: controller.signal
         });
         if (!response.ok) {
           throw new Error('Erreur du service cartographique');
@@ -77,6 +81,8 @@
         return await response.json();
       } catch (error) {
         lastError = error;
+      } finally {
+        clearTimeout(timeout);
       }
     }
     throw lastError;
@@ -101,10 +107,10 @@
 
     try {
       let elements = [];
-      for (const radius of [8000, 20000, 40000]) {
+      for (const radius of [6000, 12000]) {
         const data = await fetchOverpass(buildOverpassQuery(lat, lng, radius));
         elements = data.elements || [];
-        if (elements.length >= 5 || radius === 40000) {
+        if (elements.length > 0 || radius === 12000) {
           break;
         }
       }
