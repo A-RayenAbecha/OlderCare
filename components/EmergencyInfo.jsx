@@ -53,7 +53,7 @@ export default function EmergencyInfo({ bundle, cancelUrl = "/dashboard", sosUrl
           {contacts.map((contact) => <div className="emergency-contact-row" key={contact.id}><div><strong>{contact.full_name || "Contact urgence"}</strong><small>{contact.relationship || "Contact de confiance"}</small>{contact.residence && <small>{contact.residence}</small>}</div><a href={`tel:${contact.phone_number || 112}`}>{contact.phone_number || "112"}</a></div>)}
         </section>
       </div>
-      <Script src="/js/emergency-panel.js?v=2" strategy="afterInteractive" />
+      <Script src="/js/emergency-panel.js?v=3" strategy="afterInteractive" />
     </main>
   );
 }

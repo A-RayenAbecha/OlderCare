@@ -1,10 +1,4 @@
 (() => {
-  const endpoints = [
-    'https://overpass.kumi.systems/api/interpreter',
-    'https://overpass-api.de/api/interpreter'
-  ];
-  const overpassRequestTimeoutMs = 4500;
-
   const escapeHtml = value => String(value || '')
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -29,65 +23,6 @@
     return (meters / 1000).toFixed(1).replace('.', ',') + ' km';
   };
 
-  const describeEmergencyPlace = tags => {
-    if (!tags) {
-      return 'Service m\u00e9dical';
-    }
-    if (tags.emergency === 'ambulance_station') {
-      return 'Ambulance';
-    }
-    if (tags.amenity === 'hospital' || tags.healthcare === 'hospital') {
-      return tags.emergency === 'yes' ? 'H\u00f4pital avec urgence' : 'H\u00f4pital';
-    }
-    if (tags.amenity === 'clinic' || tags.healthcare === 'clinic') {
-      return 'Clinique';
-    }
-    if (tags.amenity === 'doctors' || tags.healthcare === 'doctor') {
-      return 'M\u00e9decin';
-    }
-    return 'Service m\u00e9dical';
-  };
-
-  const buildOverpassQuery = (lat, lng, radius) => `
-    [out:json][timeout:5];
-    (
-      node(around:${radius},${lat},${lng})["amenity"~"hospital|clinic|doctors"];
-      way(around:${radius},${lat},${lng})["amenity"~"hospital|clinic|doctors"];
-      relation(around:${radius},${lat},${lng})["amenity"~"hospital|clinic|doctors"];
-      node(around:${radius},${lat},${lng})["healthcare"~"hospital|clinic|doctor"];
-      way(around:${radius},${lat},${lng})["healthcare"~"hospital|clinic|doctor"];
-      relation(around:${radius},${lat},${lng})["healthcare"~"hospital|clinic|doctor"];
-      node(around:${radius},${lat},${lng})["emergency"="ambulance_station"];
-      way(around:${radius},${lat},${lng})["emergency"="ambulance_station"];
-      relation(around:${radius},${lat},${lng})["emergency"="ambulance_station"];
-    );
-    out center tags 30;
-  `;
-
-  const fetchOverpass = async query => {
-    let lastError;
-    for (const endpoint of endpoints) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), overpassRequestTimeoutMs);
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: new URLSearchParams({ data: query }),
-          signal: controller.signal
-        });
-        if (!response.ok) {
-          throw new Error('Erreur du service cartographique');
-        }
-        return await response.json();
-      } catch (error) {
-        lastError = error;
-      } finally {
-        clearTimeout(timeout);
-      }
-    }
-    throw lastError;
-  };
-
   const setNearbyMessage = (widget, message) => {
     const rows = widget.querySelector('[data-nearby-rows]');
     if (rows) {
@@ -106,38 +41,15 @@
     setNearbyMessage(widget, 'Recherche des urgences proches...');
 
     try {
-      let elements = [];
-      for (const radius of [6000, 12000]) {
-        const data = await fetchOverpass(buildOverpassQuery(lat, lng, radius));
-        elements = data.elements || [];
-        if (elements.length > 0 || radius === 12000) {
-          break;
-        }
+      const response = await fetch('/api/emergency/nearby?lat=' + encodeURIComponent(lat) + '&lng=' + encodeURIComponent(lng), {
+        cache: 'no-store',
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) {
+        throw new Error('Erreur du service de localisation');
       }
-
-      const places = elements
-        .map(element => {
-          const placeLat = element.lat || (element.center && element.center.lat);
-          const placeLng = element.lon || (element.center && element.center.lon);
-          if (placeLat == null || placeLng == null) {
-            return null;
-          }
-          const tags = element.tags || {};
-          const name = tags.name || tags['name:fr'] || tags.operator || 'Urgence m\u00e9dicale proche';
-          return {
-            key: element.type + '-' + element.id,
-            name,
-            kind: describeEmergencyPlace(tags),
-            lat: placeLat,
-            lng: placeLng,
-            phone: tags.phone || tags['contact:phone'] || '',
-            distance: distanceInMeters(lat, lng, placeLat, placeLng)
-          };
-        })
-        .filter(Boolean)
-        .filter((place, index, list) => list.findIndex(item => item.key === place.key) === index)
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 5);
+      const payload = await response.json();
+      const places = Array.isArray(payload.places) ? payload.places : [];
 
       if (places.length === 0) {
         const mapsSearch = 'https://www.google.com/maps/search/hospital+emergency/@' + lat + ',' + lng + ',13z';
@@ -146,9 +58,9 @@
         return;
       }
 
-      status.textContent = places.length + ' trouv\u00e9es';
+      status.textContent = payload.source === 'fallback' ? places.length + ' secours' : places.length + ' trouv\u00e9es';
       rows.innerHTML = places.map(place => {
-        const mapsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + place.lat + ',' + place.lng;
+        const mapsUrl = place.mapsUrl || 'https://www.google.com/maps/dir/?api=1&destination=' + place.lat + ',' + place.lng;
         const phoneLink = place.phone
           ? '<a class="emergency-nearby-phone" href="tel:' + escapeHtml(place.phone) + '">' + escapeHtml(place.phone) + '</a>'
           : '';
@@ -165,8 +77,8 @@
       }).join('');
     } catch (error) {
       const mapsSearch = 'https://www.google.com/maps/search/hospital+emergency/@' + lat + ',' + lng + ',13z';
-      status.textContent = 'Indisponible';
-      rows.innerHTML = '<tr><td colspan="3">Impossible de charger les urgences proches maintenant. <a href="' + mapsSearch + '" target="_blank" rel="noreferrer">Ouvrir Maps</a></td></tr>';
+      status.textContent = 'Maps';
+      rows.innerHTML = '<tr><td colspan="3">La liste automatique est momentan\u00e9ment indisponible. <a href="' + mapsSearch + '" target="_blank" rel="noreferrer">Ouvrir Maps</a></td></tr>';
     }
   };
 
