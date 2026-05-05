@@ -34,7 +34,7 @@ export default async function WelcomePage() {
           <article className="welcome-feature-card"><div className="welcome-feature-icon red">🚑</div><div><h2>Prêt en urgence</h2><p>Partagez vos informations de santé critiques au moment où elles comptent le plus.</p></div></article>
         </section>
         <section className="welcome-control-card">
-          <span>▣</span><div><h2>Votre santé. Vos données. Votre contrôle.</h2><p>Vos informations restent protégées et accessibles uniquement lorsque vous en avez besoin.</p></div>
+          <span>🛡</span><div><h2>Votre santé. Vos données. Votre contrôle.</h2><p>Vos informations restent protégées et accessibles uniquement lorsque vous en avez besoin.</p></div>
         </section>
       </main>
     </>

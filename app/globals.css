@@ -5818,3 +5818,148 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
     max-width: none;
   }
 }
+
+/* Focused polish for the Vercel/Next version. */
+.emergency-rail-call.is-global strong {
+  font-size: clamp(15px, 1.05vw, 18px);
+  line-height: 1.14;
+  max-width: 172px;
+}
+
+.emergency-rail-call.is-global small {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.welcome-shell {
+  border: 1px solid rgba(198, 216, 243, .72);
+}
+
+.welcome-shell .topbar {
+  align-items: center;
+}
+
+.welcome-shell .brand-with-video {
+  min-width: min(340px, 48vw);
+}
+
+.welcome-shell .brand-video {
+  width: min(340px, 48vw);
+  height: 132px;
+  object-fit: contain;
+  background: rgba(248, 251, 255, .78);
+}
+
+.welcome-copy h1 {
+  text-wrap: balance;
+}
+
+.welcome-copy p {
+  text-wrap: pretty;
+}
+
+.welcome-visual {
+  border: 1px solid rgba(193, 219, 244, .62);
+  box-shadow: 0 24px 64px rgba(39, 88, 149, .12);
+}
+
+.welcome-visual img {
+  transform: none;
+  padding: 16px;
+}
+
+.welcome-feature-card,
+.welcome-control-card,
+.welcome-secondary-btn,
+.welcome-login-btn {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.welcome-feature-card:hover,
+.welcome-secondary-btn:hover,
+.welcome-login-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(21, 87, 245, .42);
+  box-shadow: 0 22px 54px rgba(52, 86, 138, .13);
+}
+
+@media (min-width: 900px) {
+  .welcome-shell .topbar {
+    min-height: 156px;
+    padding: 12px 42px;
+  }
+
+  .welcome-hero {
+    grid-template-columns: minmax(390px, .78fr) minmax(420px, 1fr);
+    gap: clamp(28px, 4vw, 58px);
+    padding: 44px clamp(36px, 4vw, 68px) 28px;
+  }
+
+  .welcome-copy h1 {
+    font-size: clamp(46px, 4.2vw, 72px);
+    max-width: 650px;
+  }
+
+  .welcome-copy p {
+    max-width: 570px;
+  }
+
+  .welcome-actions {
+    width: min(100%, 560px);
+    margin-top: 26px;
+  }
+
+  .welcome-visual {
+    min-height: clamp(390px, 34vw, 510px);
+  }
+
+  .welcome-visual img {
+    min-height: clamp(390px, 34vw, 510px);
+  }
+
+  .welcome-feature-grid {
+    padding: 8px clamp(36px, 4vw, 68px) 22px;
+    gap: 18px;
+  }
+
+  .welcome-feature-card {
+    min-height: 132px;
+    padding: 20px;
+  }
+
+  .welcome-control-card {
+    margin: 12px clamp(36px, 4vw, 68px) 34px;
+  }
+}
+
+@media (max-width: 899px) {
+  .welcome-shell .topbar {
+    min-height: 132px;
+    padding: 12px 22px;
+  }
+
+  .welcome-shell .brand-with-video {
+    min-width: min(230px, 58vw);
+  }
+
+  .welcome-shell .brand-video {
+    width: min(230px, 58vw);
+    height: 104px;
+  }
+
+  .welcome-hero {
+    padding-top: 30px;
+  }
+
+  .welcome-copy h1 {
+    font-size: clamp(40px, 10vw, 58px);
+  }
+
+  .welcome-copy p {
+    font-size: 16px;
+  }
+
+  .welcome-visual img {
+    padding: 10px;
+  }
+}
