@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vue d'urgence</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body class="has-emergency-rail dashboard-home-body readonly-dashboard-body">
+<div th:replace="~{fragments/emergency-rail :: emergencyRail}"></div>
+<main class="app-shell dashboard-shell readonly-dashboard-shell">
+  <div class="topbar dashboard-topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <div class="bracelet-status-pill"><span></span> Bracelet connect&eacute;</div>
+    <div class="top-actions">
+      <span class="profile-pill-link active">Urgence</span>
+      <a class="tiny dashboard-logout" href="/auth/logout">D&eacute;connexion</a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </div>
+
+  <section class="content dashboard-content dashboard-subpage readonly-dashboard-content">
+    <header class="dashboard-page-hero readonly-hero">
+      <div>
+        <div class="step-text">Acc&egrave;s urgence en lecture seule</div>
+        <h1>Vue d'urgence</h1>
+        <p>Donn&eacute;es limit&eacute;es pour identifier le patient et joindre son contact d'urgence.</p>
+      </div>
+      <a class="dashboard-sos-orb" href="/readonly/sos" aria-label="Ouvrir le SOS d'urgence">
+        <span>*</span>
+        <strong>SOS</strong>
+      </a>
+    </header>
+
+    <div class="dashboard-main-grid readonly-main-grid">
+      <section class="dashboard-card dashboard-patient-card">
+        <div class="dashboard-identity">
+          <div class="dashboard-patient-icon">&#128100;</div>
+          <div>
+            <div class="step-text">Identit&eacute; du patient</div>
+            <h2 th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Patient</h2>
+            <div class="chip-row">
+              <span class="info-chip" th:if="${age != null}" th:text="${age + ' ans'}">72 ans</span>
+              <span class="info-chip" th:text="${profile.gender == 'FEMALE' ? 'Femme' : (profile.gender == 'MALE' ? 'Homme' : 'Non renseign&eacute;')}">Non renseign&eacute;</span>
+              <span class="info-chip" th:text="${profile.bloodType ?: 'Groupe inconnu'}">O+</span>
+            </div>
+          </div>
+        </div>
+        <a class="dashboard-primary-btn readonly-sos-action" href="/readonly/sos">&#9888; D&eacute;clencher SOS</a>
+      </section>
+
+      <section class="dashboard-card dashboard-vitals-card readonly-contact-panel">
+        <div class="step-text">Contacts d'urgence</div>
+        <div class="dashboard-contact-card">
+          <div class="dashboard-contact-body" th:if="${#lists.isEmpty(emergencyContacts)}">
+            <div class="contact-avatar">112</div>
+            <div>
+              <strong>Service d'urgence</strong>
+              <span class="tiny muted">Aucun contact personnel enregistr&eacute;</span>
+              <a href="tel:112">112</a>
+            </div>
+            <a class="call-button" href="tel:112">&#9742;</a>
+          </div>
+          <div class="dashboard-contact-list" th:if="${!#lists.isEmpty(emergencyContacts)}">
+            <div class="dashboard-contact-body" th:each="emergencyContact : ${emergencyContacts}">
+              <div class="contact-avatar" th:text="${emergencyContact.fullName != null && !#strings.isEmpty(emergencyContact.fullName) ? #strings.substring(emergencyContact.fullName,0,1) : 'SOS'}">S</div>
+              <div>
+                <strong th:text="${emergencyContact.fullName ?: 'Contact d''urgence'}">Contact d'urgence</strong>
+                <span class="trust-badge" th:text="${emergencyContact.relationship ?: 'Contact de confiance'}">Relation</span>
+                <span class="tiny muted" th:if="${emergencyContact.residence != null && !#strings.isEmpty(emergencyContact.residence)}" th:text="${emergencyContact.residence}">Tunis</span>
+                <a th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}" th:text="${emergencyContact.phoneNumber ?: 'Aucun t&eacute;l&eacute;phone'}">112</a>
+              </div>
+              <a class="call-button" th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}">&#9742;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <form th:if="${staffMode}" method="post" action="/readonly/unlock" class="dashboard-card dashboard-form-card readonly-unlock-card">
+      <div>
+        <div class="step-text">Acc&egrave;s personnel m&eacute;dical</div>
+        <h2>D&eacute;verrouiller le dossier complet</h2>
+        <p>Entrez le code m&eacute;dical autoris&eacute; pour ouvrir le tableau de bord patient.</p>
+      </div>
+      <p th:if="${unlockError}" th:text="${unlockError}" class="notice"></p>
+      <div class="field">
+        <label>Code d'acc&egrave;s</label>
+        <input type="password" name="staffAccessCode" placeholder="accesspatient123" autocomplete="off" required>
+      </div>
+      <button class="dashboard-primary-btn">Ouvrir la page patient</button>
+    </form>
+  </section>
+</main>
+<script src="/js/emergency-panel.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+target/
+.m2/
+.vscode/
+.idea/
+*.log
+logs/
+*.tmp
+*.temp
+welcome-*.png
+src/main/
+Dockerfile
+docker-compose.yml
+pom.xml

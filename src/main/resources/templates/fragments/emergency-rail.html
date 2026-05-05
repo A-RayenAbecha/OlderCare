@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside class="emergency-rail" th:fragment="emergencyRail" aria-label="Num&eacute;ros d'urgence">
+  <div class="emergency-rail-head">
+    <span>SOS</span>
+    <div>
+      <strong>Num&eacute;ros utiles</strong>
+      <small>Urgence rapide</small>
+    </div>
+  </div>
+
+  <a class="emergency-rail-call is-global" href="tel:112">
+    <span class="emergency-rail-icon">&#9742;<small>112</small></span>
+    <span>
+      <strong>Num&eacute;ro d'urgence international</strong>
+      <small>Partout dans le monde</small>
+    </span>
+  </a>
+
+  <a class="emergency-rail-call is-medical" href="tel:190">
+    <span class="emergency-rail-icon">&#128188;</span>
+    <span>
+      <strong>190</strong>
+      <small>M&eacute;decin urgentiste<br>Tunisie</small>
+    </span>
+  </a>
+
+  <a class="emergency-rail-call is-police" href="tel:197">
+    <span class="emergency-rail-icon">&#128110;</span>
+    <span>
+      <strong>197</strong>
+      <small>Police<br>Tunisie</small>
+    </span>
+  </a>
+
+  <a class="emergency-rail-call is-fire" href="tel:198">
+    <span class="emergency-rail-icon">&#128658;</span>
+    <span>
+      <strong>198</strong>
+      <small>Pompiers<br>Tunisie</small>
+    </span>
+  </a>
+
+  <div class="emergency-rail-note">
+    <span>&#128737;</span>
+    <strong>Votre s&eacute;curit&eacute;, notre priorit&eacute;</strong>
+    <small>Acc&eacute;dez rapidement aux services d'urgence quand vous en avez besoin.</small>
+  </div>
+</aside>
+</body>
+</html>

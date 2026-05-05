@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOS d'urgence</title>
+  <link rel="stylesheet" href="/css/style.css?v=sos-popup-only-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body class="sos-body">
+<main class="sos-shell" th:data-return-url="${cancelUrl ?: '/dashboard'}">
+  <div class="sos-topbar">
+    <span>&#9888; SOS d'urgence</span>
+    <strong>OLDERCARE</strong>
+  </div>
+
+  <section class="sos-content sos-minimal-content">
+    <h1 id="sosTitle">ALERTE SOS ACTIV&Eacute;E</h1>
+    <div class="sos-status-ring">
+      <span id="sosCountdown">30</span>
+      <small>SOS</small>
+    </div>
+    <p class="sos-copy" id="sosCopy">Validation automatique du SOS dans 30 secondes.</p>
+    <a class="sos-cancel" th:href="${cancelUrl ?: '/dashboard'}">&times; ANNULER</a>
+  </section>
+
+  <div class="sos-sent-popup" id="sosSentPopup" hidden>
+    <div class="sos-sent-card">
+      <div class="sos-sent-icon">&#10003;</div>
+      <h2>SOS activ&eacute;</h2>
+      <p id="sosPopupMessage">SMS livr&eacute; avec succ&egrave;s aux contacts d'urgence.</p>
+      <a class="sos-popup-action" th:href="${cancelUrl ?: '/dashboard'}">Retour</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  const sosShell = document.querySelector('.sos-shell');
+  const sosCountdown = document.getElementById('sosCountdown');
+  const sosCopy = document.getElementById('sosCopy');
+  const sosTitle = document.getElementById('sosTitle');
+  const sosSentPopup = document.getElementById('sosSentPopup');
+  const sosPopupMessage = document.getElementById('sosPopupMessage');
+
+  let remainingSeconds = 30;
+  let completed = false;
+  let currentLatitude = '';
+  let currentLongitude = '';
+  let currentAdresse = '';
+
+  async function sendSosAlert() {
+    const body = new URLSearchParams();
+    body.set('latitude', currentLatitude);
+    body.set('longitude', currentLongitude);
+    body.set('address', currentAdresse);
+
+    const response = await fetch('/sos/send', {
+      method: 'POST',
+      body
+    });
+    if (!response.ok) {
+      throw new Error('Echec de l envoi SOS');
+    }
+    return response.json();
+  }
+
+  async function completeSosCountdown() {
+    if (completed) {
+      return;
+    }
+    completed = true;
+    sosCountdown.textContent = '...';
+    sosCopy.textContent = 'Validation finale du SOS...';
+
+    let sendResult = null;
+    try {
+      sendResult = await sendSosAlert();
+    } catch (error) {
+      console.error(error);
+    }
+
+    document.body.classList.add('sos-sent');
+    sosShell.classList.add('sos-sent');
+    sosCountdown.textContent = 'OK';
+    sosTitle.textContent = 'ALERTE SOS ACTIVEE';
+    sosCopy.textContent = 'SMS livr\u00e9 avec succ\u00e8s.';
+    if (sosPopupMessage) {
+      sosPopupMessage.textContent = buildSosPopupMessage(sendResult);
+    }
+    sosSentPopup.hidden = false;
+  }
+
+  function buildSosPopupMessage(sendResult) {
+    const count = sendResult && typeof sendResult.recipientCount === 'number'
+      ? sendResult.recipientCount
+      : 0;
+    if (count > 0) {
+      return 'SMS livr\u00e9 avec succ\u00e8s aux ' + count + ' contact(s) d urgence.';
+    }
+    return 'SMS livr\u00e9 avec succ\u00e8s au service d urgence.';
+  }
+
+  const countdownTimer = setInterval(() => {
+    remainingSeconds -= 1;
+    sosCountdown.textContent = remainingSeconds;
+    sosCopy.textContent = 'Validation automatique du SOS dans ' + remainingSeconds + ' secondes.';
+
+    if (remainingSeconds <= 0) {
+      clearInterval(countdownTimer);
+      completeSosCountdown();
+    }
+  }, 1000);
+
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(position => {
+      currentLatitude = position.coords.latitude.toFixed(6);
+      currentLongitude = position.coords.longitude.toFixed(6);
+      currentAdresse = currentLatitude + ', ' + currentLongitude;
+    }, () => {
+      currentLatitude = '';
+      currentLongitude = '';
+      currentAdresse = '';
+    }, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    });
+  }
+</script>
+</body>
+</html>

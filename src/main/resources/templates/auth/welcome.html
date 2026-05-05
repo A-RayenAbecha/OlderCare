@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OlderCare</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body class="has-emergency-rail">
+<div th:replace="~{fragments/emergency-rail :: emergencyRail}"></div>
+<main class="app-shell welcome-shell">
+  <div class="topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <a class="welcome-login-btn" href="/auth/login-code-page">
+      <span>&#128100;</span>
+      Connexion
+    </a>
+  </div>
+
+  <section class="welcome-hero">
+    <div class="welcome-copy">
+      <div class="step-text welcome-kicker"><span>&#128737;</span> Acc&egrave;s sant&eacute; par bracelet</div>
+      <h1>Sant&eacute; connect&eacute;e,<br><span>reli&eacute;e</span> &agrave; vous</h1>
+      <p>Reliez votre bracelet m&eacute;dical, prot&eacute;gez vos informations d'urgence et acc&eacute;dez &agrave; votre espace sant&eacute; depuis n'importe quel appareil.</p>
+
+      <div class="welcome-actions">
+        <a class="primary-btn" href="/auth/signup/patient"><span>&#128100;</span> Inscription patient</a>
+        <a class="welcome-secondary-btn" href="/auth/login-code-page"><span>&#9638;</span> Connexion avec code bracelet</a>
+      </div>
+
+      <div class="welcome-secure-line"><span>&#128737;</span> S&eacute;curis&eacute;&nbsp; &bull;&nbsp; Priv&eacute;&nbsp; &bull;&nbsp; Toujours accessible</div>
+    </div>
+
+    <div class="welcome-visual" aria-hidden="true">
+      <img th:src="@{/images/medical-care-bg.png}" alt="">
+    </div>
+  </section>
+
+  <section class="welcome-feature-grid" aria-label="Avantages OlderCare">
+    <article class="welcome-feature-card">
+      <div class="welcome-feature-icon blue">&#128196;</div>
+      <div>
+        <h2>Dossier m&eacute;dical s&eacute;curis&eacute;</h2>
+        <p>Stockez et g&eacute;rez vos informations m&eacute;dicales en toute s&eacute;curit&eacute;.</p>
+      </div>
+    </article>
+    <article class="welcome-feature-card">
+      <div class="welcome-feature-icon green">&#128246;</div>
+      <div>
+        <h2>Connexion du bracelet</h2>
+        <p>Connectez votre bracelet pour un acc&egrave;s instantan&eacute; en cas d'urgence.</p>
+      </div>
+    </article>
+    <article class="welcome-feature-card">
+      <div class="welcome-feature-icon red">&#128657;</div>
+      <div>
+        <h2>Pr&ecirc;t en urgence</h2>
+        <p>Partagez vos informations de sant&eacute; critiques au moment o&ugrave; elles comptent le plus.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="welcome-control-card">
+    <span>&#128737;</span>
+    <div>
+      <h2>Votre sant&eacute;. Vos donn&eacute;es. Votre contr&ocirc;le.</h2>
+      <p>Vos informations restent prot&eacute;g&eacute;es et accessibles uniquement lorsque vous en avez besoin.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

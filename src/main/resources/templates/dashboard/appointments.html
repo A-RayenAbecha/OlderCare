@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rendez-vous</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+  <style>
+    @media (max-width: 1100px) {
+      body .bottom-nav.four.dashboard-nav.profile-like-nav {
+        position: fixed !important;
+        left: 18px !important;
+        right: 18px !important;
+        bottom: 10px !important;
+        z-index: 999 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-height: 84px;
+        margin: 0 !important;
+        transform: none !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 4px;
+        padding: 8px;
+        border: 1px solid #dbe6f8;
+        border-radius: 12px;
+        background: rgba(255,255,255,.96);
+        box-shadow: 0 16px 40px rgba(32, 62, 126, .14);
+        backdrop-filter: blur(12px);
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item {
+        min-height: 68px;
+        color: #6f7b99;
+        background: transparent;
+        box-shadow: none;
+        transition: transform .18s ease, background .18s ease, color .18s ease;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active {
+        color: #1557f5;
+        background: #eef5ff;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-symbol,
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active .nav-symbol {
+        color: inherit;
+        background: transparent;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item:active {
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+<body class="has-emergency-rail dashboard-home-body">
+<div th:replace="~{fragments/emergency-rail :: emergencyRail}"></div>
+<main class="app-shell dashboard-shell">
+  <div class="topbar dashboard-topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <div class="bracelet-status-pill"><span></span> Bracelet connect&eacute;</div>
+    <div class="top-actions">
+      <a class="profile-pill-link" href="/dashboard">Accueil</a>
+      <a class="tiny dashboard-logout" href="/auth/logout">D&eacute;connexion</a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </div>
+
+  <section class="content dashboard-content dashboard-subpage">
+    <header class="dashboard-page-hero">
+      <div>
+        <div class="step-text">Espace de sant&eacute; personnel</div>
+        <h1>Mes rendez-vous</h1>
+        <p>Consultez et ajoutez les visites li&eacute;es &agrave; votre dossier.</p>
+      </div>
+      <a class="dashboard-sos-orb small" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
+        <span>*</span>
+        <strong>SOS</strong>
+      </a>
+    </header>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Nouveau rendez-vous</h2>
+      </div>
+      <form method="post" action="/dashboard/appointments" class="dashboard-card dashboard-form-card">
+        <div class="field">
+          <label>M&eacute;decin / service</label>
+          <input name="doctorName" placeholder="Dr Martin" required>
+        </div>
+        <div class="field">
+          <label>Sp&eacute;cialit&eacute;</label>
+          <input name="specialty" placeholder="Cardiologie" required>
+        </div>
+        <div class="field">
+          <label>Date et heure</label>
+          <input type="datetime-local" name="appointmentDate" required>
+        </div>
+        <div class="field">
+          <label>Lieu</label>
+          <input name="clinicLocation" placeholder="Clinique / h&ocirc;pital" required>
+        </div>
+        <div class="field">
+          <label>T&eacute;l&eacute;phone</label>
+          <input name="phoneContact" placeholder="+216 00 000 000">
+        </div>
+        <button class="dashboard-primary-btn">Ajouter le rendez-vous</button>
+      </form>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Agenda m&eacute;dical</h2>
+        <span class="dashboard-count-pill" th:text="${#lists.size(appointments) + ' total'}">0 total</span>
+      </div>
+      <div th:if="${#lists.isEmpty(appointments)}" class="dashboard-empty-card">
+        <strong>Aucun rendez-vous</strong>
+        <p>Aucun rendez-vous n'est encore enregistr&eacute;.</p>
+      </div>
+      <div class="dashboard-record-grid">
+        <article class="dashboard-card dashboard-appointment-card" th:each="appointment : ${appointments}">
+          <div class="dashboard-date-badge tall" th:text="${appointment.appointmentDate != null ? #temporals.format(appointment.appointmentDate, 'dd MMM') : '-- ---'}">14 OCT</div>
+          <div>
+            <h3 th:text="${appointment.doctorName ?: 'M&eacute;decin'}">Dr Martin</h3>
+            <strong th:text="${appointment.specialty ?: 'Sp&eacute;cialit&eacute;'}">Cardiologie</strong>
+            <p th:text="${appointment.appointmentDate != null ? #temporals.format(appointment.appointmentDate, 'EEEE HH:mm') : 'Date &agrave; confirmer'}">Lundi 14:00</p>
+            <small th:text="${appointment.clinicLocation ?: 'Lieu &agrave; confirmer'}">Clinique</small>
+            <a th:if="${appointment.phoneContact != null && !#strings.isEmpty(appointment.phoneContact)}" th:href="${'tel:' + appointment.phoneContact}" th:text="${appointment.phoneContact}">+216 00 000 000</a>
+          </div>
+          <span class="dashboard-status-pill" th:text="${appointment.status == 'SCHEDULED' ? 'Planifi&eacute;' : (appointment.status ?: 'Planifi&eacute;')}">Planifi&eacute;</span>
+        </article>
+      </div>
+    </section>
+  </section>
+
+</main>
+<nav class="medical-mobile-nav shared-dashboard-nav">
+  <a href="/dashboard"><span>&#8962;</span>Accueil</a>
+  <a href="/dashboard/medications"><span>&#128138;</span>M&eacute;dicaments</a>
+  <a class="active" href="/dashboard/appointments"><span>&#128197;</span>Rendez-vous</a>
+  <a href="/dashboard/vaccines"><span>&#128137;</span>Vaccins</a>
+</nav>
+<script src="/js/emergency-panel.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Allergies</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body><main class="app-shell">
+  <div class="topbar"><button class="icon-button" onclick="history.back()">&larr;</button><strong>Profil de sant&eacute;</strong><button class="icon-button">&#8984;</button></div>
+  <section class="content">
+    <h1 class="title-lg">Allergies et<br>mode de vie</h1><p class="subtitle">Compl&eacute;tez votre profil avec les allergies et les risques li&eacute;s au mode de vie.</p>
+    <form id="life" class="form-stack">
+      <div class="field dynamic-fieldset" data-allergy-group data-list="drugAllergyList" data-hidden="drugAllergies">
+        <label>Allergies m&eacute;dicamenteuses</label>
+        <div id="drugAllergyList" class="dynamic-list" data-placeholder="P&eacute;nicilline, sulfamides, ibuprof&egrave;ne">
+          <div class="allergy-row" th:each="allergy : ${drugAllergyItems}">
+            <input class="allergy-input" type="text" th:value="${allergy}" placeholder="P&eacute;nicilline, sulfamides, ibuprof&egrave;ne">
+            <button type="button" class="icon-button small danger" data-remove-allergy aria-label="Supprimer l'allergie">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-row-btn" data-add-allergy data-target="drugAllergyList" data-placeholder="P&eacute;nicilline, sulfamides, ibuprof&egrave;ne"><span>+</span> Ajouter une autre allergie m&eacute;dicamenteuse</button>
+        <input type="hidden" name="drugAllergies" id="drugAllergies">
+      </div>
+      <div class="field dynamic-fieldset" data-allergy-group data-list="otherAllergyList" data-hidden="otherAllergies">
+        <label>Autres allergies</label>
+        <div id="otherAllergyList" class="dynamic-list" data-placeholder="Latex, iode, produit de contraste">
+          <div class="allergy-row" th:each="allergy : ${otherAllergyItems}">
+            <input class="allergy-input" type="text" th:value="${allergy}" placeholder="Latex, iode, produit de contraste">
+            <button type="button" class="icon-button small danger" data-remove-allergy aria-label="Supprimer l'allergie">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-row-btn" data-add-allergy data-target="otherAllergyList" data-placeholder="Latex, iode, produit de contraste"><span>+</span> Ajouter une autre allergie</button>
+        <input type="hidden" name="otherAllergies" id="otherAllergies">
+      </div>
+      <div class="field"><label>Tabac</label><select name="smokingStatus"><option>Jamais fum&eacute;</option><option>Ancien fumeur</option><option>Fumeur actuel</option></select></div>
+      <div class="field"><label>Alcool</label><select name="alcoholConsumption"><option>Non buveur</option><option>Occasionnel/social</option><option>Consommation quotidienne</option></select></div>
+      <div class="blue-panel"><h2>Profil pr&ecirc;t</h2><p>Votre espace de sant&eacute; personnel est maintenant centralis&eacute; et li&eacute; &agrave; votre bracelet.</p></div>
+    </form>
+  </section>
+  <div class="bottom-actions"><button class="save-btn" data-draft="life">&#9635;<span>ENREGISTRER</span></button><button class="primary-btn" form="life">TERMINER &rarr;</button></div>
+</main><script th:src="@{/js/main.js}"></script><script>life.addEventListener('submit', e => { e.preventDefault(); syncAllergyFields(life); postForm('/profile/allergies-lifestyle', new FormData(life), '/dashboard'); });</script></body></html>

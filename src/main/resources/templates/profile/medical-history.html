@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ant&eacute;c&eacute;dents m&eacute;dicaux</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body><main class="app-shell">
+  <div class="topbar"><button class="icon-button" onclick="history.back()">&larr;</button><strong>Profil de sant&eacute;</strong><button class="icon-button">&#8984;</button></div>
+  <section class="content">
+    <h1 class="title-lg">Ant&eacute;c&eacute;dents m&eacute;dicaux</h1><p class="subtitle">S&eacute;lectionnez les pathologies chroniques diagnostiqu&eacute;es.</p>
+    <form id="medical" class="form-stack">
+      <input type="hidden" name="surgicalProcedures" th:value="${history.surgicalProcedures}">
+      <input type="hidden" name="obGynHistory" th:value="${history.obGynHistory}">
+      <div class="section-label">&#9829; Cardiovasculaire</div>
+      <div class="choice-list">
+        <label class="choice">Hypertension art&eacute;rielle <input type="checkbox" value="Hypertension art&eacute;rielle" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Hypertension art&eacute;rielle')}"></label>
+        <label class="choice">Hypercholest&eacute;rol&eacute;mie <input type="checkbox" value="Hypercholest&eacute;rol&eacute;mie" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Hypercholest&eacute;rol&eacute;mie')}"></label>
+        <label class="choice">Maladie cardiaque <input type="checkbox" value="Maladie cardiaque" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Maladie cardiaque')}"></label>
+        <label class="choice">AVC <input type="checkbox" value="AVC" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'AVC')}"></label>
+      </div>
+      <div class="section-label">&#9679; M&eacute;tabolique</div>
+      <div class="choice-list">
+        <label class="choice">Diab&egrave;te <input id="diabetesToggle" type="checkbox" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'Diabete Type 1') || #strings.contains(history.chronicConditions, 'Diabete Type 2') || #strings.contains(history.chronicConditions, 'Diab&egrave;te type 1') || #strings.contains(history.chronicConditions, 'Diab&egrave;te type 2') || #strings.contains(history.chronicConditions, 'Diab&egrave;te gestationnel'))}"></label>
+        <div id="diabetesTypePanel" class="detail-panel">
+          <span class="detail-title">Type de diab&egrave;te</span>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" value="Diab&egrave;te type 1" name="diabetesType" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'Diabete Type 1') || #strings.contains(history.chronicConditions, 'Diab&egrave;te type 1'))}"><span>Type 1</span></label>
+            <label class="chip"><input type="radio" value="Diab&egrave;te type 2" name="diabetesType" th:checked="${history.chronicConditions == null || !#strings.contains(history.chronicConditions, 'Diabete Type 1') && !#strings.contains(history.chronicConditions, 'Diab&egrave;te type 1') && !#strings.contains(history.chronicConditions, 'Diab&egrave;te gestationnel')}"><span>Type 2</span></label>
+            <label class="chip"><input type="radio" value="Diab&egrave;te gestationnel" name="diabetesType" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Diab&egrave;te gestationnel')}"><span>Gestationnel</span></label>
+          </div>
+        </div>
+        <label class="choice">Troubles thyro&iuml;diens <input type="checkbox" value="Troubles thyro&iuml;diens" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Troubles thyro&iuml;diens')}"></label>
+      </div>
+      <div class="section-label">&#9729; Respiratoire</div>
+      <div class="chip-row">
+        <label class="chip"><input type="checkbox" value="Asthme" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Asthme')}"><span>Asthme</span></label>
+        <label class="chip"><input type="checkbox" value="BPCO" name="condition" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'COPD') || #strings.contains(history.chronicConditions, 'BPCO'))}"><span>BPCO</span></label>
+        <label class="chip"><input type="checkbox" value="Apn&eacute;e du sommeil" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Apn&eacute;e du sommeil')}"><span>Apn&eacute;e du sommeil</span></label>
+      </div>
+      <div class="section-label">&#9670; Digestif</div>
+      <div class="choice-list">
+        <label class="choice">RGO <input type="checkbox" value="RGO" name="condition" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'GERD') || #strings.contains(history.chronicConditions, 'RGO'))}"></label>
+        <label class="choice">Maladie de Crohn <input type="checkbox" value="Maladie de Crohn" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Crohn')}"></label>
+        <label class="choice">SII <input type="checkbox" value="SII" name="condition" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'IBS') || #strings.contains(history.chronicConditions, 'SII'))}"></label>
+      </div>
+      <div class="section-label">&#9678; Neurologique</div>
+      <div class="choice-list">
+        <label class="choice">&Eacute;pilepsie / Convulsions <input type="checkbox" value="&Eacute;pilepsie/Convulsions" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Epilepsy')}"></label>
+        <label class="choice">Migraines <input type="checkbox" value="Migraines" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Migraines')}"></label>
+        <label class="choice">Scl&eacute;rose en plaques <input type="checkbox" value="Scl&eacute;rose en plaques" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Scl&eacute;rose en plaques')}"></label>
+      </div>
+      <div class="blue-panel">
+        <div class="section-label" style="color:white;margin-top:0">Sant&eacute; mentale</div>
+        <div class="chip-row">
+          <label class="chip"><input type="checkbox" value="Anxi&eacute;t&eacute;" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'Anxi&eacute;t&eacute;')}"><span>Anxi&eacute;t&eacute;</span></label>
+          <label class="chip"><input type="checkbox" value="D&eacute;pression" name="condition" th:checked="${history.chronicConditions != null && #strings.contains(history.chronicConditions, 'D&eacute;pression')}"><span>D&eacute;pression</span></label>
+          <label class="chip"><input type="checkbox" value="TSPT" name="condition" th:checked="${history.chronicConditions != null && (#strings.contains(history.chronicConditions, 'PTSD') || #strings.contains(history.chronicConditions, 'TSPT'))}"><span>TSPT</span></label>
+        </div>
+      </div>
+      <input type="hidden" name="chronicConditions" id="chronicConditions">
+    </form>
+  </section>
+  <div class="bottom-actions"><button class="save-btn" data-draft="medical">&#9635;<span>ENREGISTRER</span></button><button class="primary-btn" form="medical">CONTINUER &rarr;</button></div>
+</main><script th:src="@{/js/main.js}"></script><script>medical.addEventListener('submit', e => { e.preventDefault(); const conditions = collectCheckedValues('input[name=condition]'); if (diabetesToggle.checked) { const selectedType = document.querySelector('input[name=diabetesType]:checked'); conditions.push(selectedType ? selectedType.value : 'Diab&egrave;te type 2'); } chronicConditions.value = conditions.join(', '); postForm('/profile/medical-history', new FormData(medical), '/profile/setup?step=4'); });</script></body></html>

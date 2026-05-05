@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche m&eacute;dicale</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body class="medical-profile-body">
+<main class="medical-fiche-shell">
+  <header class="medical-mobile-head">
+    <a class="medical-menu-button" href="/dashboard" aria-label="Retour accueil">&#9776;</a>
+    <div>
+      <div class="medical-eyebrow">Dossier m&eacute;dical</div>
+      <h1>Fiche m&eacute;dicale</h1>
+      <p th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Ahmed Rayen Abecha</p>
+    </div>
+    <div class="medical-mobile-actions">
+      <a class="medical-sos-square" href="/dashboard/sos" aria-label="SOS"><span>*</span><strong>SOS</strong></a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </header>
+
+  <header class="medical-fiche-header">
+    <div>
+      <div class="medical-eyebrow">Dossier m&eacute;dical</div>
+      <h1>Fiche m&eacute;dicale</h1>
+    </div>
+    <div class="medical-header-actions">
+      <a class="medical-outline-action" href="/dashboard">&#8962; Tableau de bord</a>
+      <a class="medical-outline-action" href="/dashboard/profile">&#8635; Actualiser</a>
+      <a class="medical-outline-action" href="/auth/logout">D&eacute;connexion</a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </header>
+
+  <section class="medical-fiche-grid">
+    <article class="medical-card medical-identity-card">
+      <div class="medical-identity-main">
+        <div class="medical-avatar">&#128100;</div>
+        <div>
+          <div class="medical-card-label">Identit&eacute; du patient</div>
+          <h2 th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Ahmed Rayen Abecha</h2>
+          <div class="medical-pill-row">
+            <span class="medical-pill" th:if="${age != null}" th:text="${age + ' ans'}">26 ans</span>
+            <span class="medical-pill" th:text="${profile.gender == 'FEMALE' ? 'Femme' : (profile.gender == 'MALE' ? 'Homme' : 'Non renseign&eacute;')}">Homme</span>
+            <span class="medical-pill" th:if="${profile.nationality != null && !#strings.isEmpty(profile.nationality)}" th:text="${profile.nationality}">Tunisie</span>
+          </div>
+        </div>
+      </div>
+
+      <dl class="medical-info-grid">
+        <div>
+          <dt>&#128197; Date de naissance</dt>
+          <dd th:text="${profile.dateOfBirth != null ? #temporals.format(profile.dateOfBirth, 'dd/MM/yyyy') + (age != null ? ' (' + age + ' ans)' : '') : '--'}">14/03/1998 (26 ans)</dd>
+        </div>
+        <div>
+          <dt>&#9678; Groupe sanguin</dt>
+          <dd th:text="${profile.bloodType ?: '--'}">O+</dd>
+        </div>
+        <div>
+          <dt>&#128203; N&deg; de dossier</dt>
+          <dd th:text="${recordNumber}">HN-26-384771</dd>
+        </div>
+        <div>
+          <dt>&#9888; Allergies connues</dt>
+          <dd th:text="${#lists.isEmpty(allergyItems) ? 'Non' : 'Oui (' + allergyItems[0] + ')'}">Oui (sulfa)</dd>
+        </div>
+      </dl>
+
+      <div class="medical-file-actions">
+        <a class="medical-outline-action" href="/dashboard/profile/pdf">&#128196; T&eacute;l&eacute;charger PDF</a>
+        <button class="medical-outline-action" type="button" onclick="window.print()">&#128424; Imprimer</button>
+        <button class="medical-primary-action" type="button" id="shareMedicalProfile">&#128257; Partager</button>
+      </div>
+    </article>
+
+    <article class="medical-card medical-alert-card">
+      <div class="medical-card-label danger">Priorit&eacute; 1 : vital</div>
+      <div class="medical-alert-inner">
+        <span class="medical-alert-icon">&#9888;</span>
+        <div>
+          <h3>Allergies majeures</h3>
+          <p th:if="${#lists.isEmpty(allergyItems)}">Aucune allergie majeure enregistr&eacute;e</p>
+          <ul th:if="${!#lists.isEmpty(allergyItems)}">
+            <li th:each="allergy : ${allergyItems}" th:text="${allergy}">sulfa 1</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="medical-card medical-chronic-card">
+      <div class="medical-card-title">
+        <span>&#12336;</span>
+        <h3>Pathologies chroniques</h3>
+      </div>
+      <p class="medical-muted" th:if="${#lists.isEmpty(chronicConditionItems)}">Aucune pathologie chronique enregistr&eacute;e.</p>
+      <ul class="medical-condition-list" th:if="${!#lists.isEmpty(chronicConditionItems)}">
+        <li th:each="condition, iter : ${chronicConditionItems}" th:text="${condition}" th:classappend="${iter.index > 5 ? ' medical-extra-condition' : ''}">Asthme</li>
+      </ul>
+      <button class="medical-more-button" type="button" th:if="${#lists.size(chronicConditionItems) > 6}">Voir plus &#8964;</button>
+    </article>
+
+    <section class="medical-secondary-grid">
+      <article class="medical-card medical-summary-card">
+        <span class="medical-summary-icon medicine">&#128138;</span>
+        <div>
+          <h3>Traitement actuel</h3>
+          <strong th:if="${#lists.isEmpty(medications)}">Aucun traitement en cours</strong>
+          <strong th:if="${!#lists.isEmpty(medications)}" th:text="${medications[0].name + (medications[0].dosage != null ? ' - ' + medications[0].dosage : '')}">Lisinopril - 10mg</strong>
+          <p th:if="${#lists.isEmpty(medications)}">Aucun m&eacute;dicament ou traitement actif enregistr&eacute;.</p>
+          <p th:if="${!#lists.isEmpty(medications)}" th:text="${medications[0].frequency ?: 'Fr&eacute;quence non renseign&eacute;e'}">10mg / jour</p>
+        </div>
+        <a class="medical-row-arrow" href="/dashboard/medications">&#8250;</a>
+      </article>
+
+      <article class="medical-card medical-summary-card">
+        <span class="medical-summary-icon surgery">&#9874;</span>
+        <div>
+          <h3>Ant&eacute;c&eacute;dents chirurgicaux</h3>
+          <strong th:if="${#lists.isEmpty(surgicalProcedureItems)}">Aucune chirurgie enregistr&eacute;e</strong>
+          <strong th:if="${!#lists.isEmpty(surgicalProcedureItems)}">
+            <span th:each="procedure, iter : ${surgicalProcedureItems}" th:text="${procedure + (iter.last ? '' : ', ')}">Appendicectomie</span>
+          </strong>
+        </div>
+        <a class="medical-row-arrow" href="/profile/setup?step=4&amp;returnTo=/dashboard/profile">&#8250;</a>
+      </article>
+
+      <article class="medical-card medical-summary-card">
+        <span class="medical-summary-icon obgyn">&#9792;</span>
+        <div>
+          <h3>Ant&eacute;c&eacute;dents gyn&eacute;co-obst&eacute;triques</h3>
+          <strong th:if="${#lists.isEmpty(obGynItems)}">Aucune donn&eacute;e enregistr&eacute;e</strong>
+          <strong th:if="${!#lists.isEmpty(obGynItems)}">
+            <span th:each="item, iter : ${obGynItems}" th:text="${item + (iter.last ? '' : '  -  ')}">Grossesses: 1</span>
+          </strong>
+        </div>
+        <a class="medical-row-arrow" href="/profile/setup?step=5&amp;returnTo=/dashboard/profile">&#8250;</a>
+      </article>
+    </section>
+
+    <section class="medical-card medical-contacts-card">
+      <div class="medical-contact-head">
+        <h2>Contacts d'urgence</h2>
+        <a href="/profile/setup?step=2&amp;returnTo=/dashboard/profile">Modifier</a>
+      </div>
+      <div class="medical-contact-list">
+        <div class="medical-contact-row" th:if="${#lists.isEmpty(emergencyContacts)}">
+          <div class="medical-contact-avatar">112</div>
+          <div>
+            <strong>Aucun contact enregistr&eacute;</strong>
+            <span>Service d'urgence par d&eacute;faut</span>
+          </div>
+          <a class="medical-contact-phone" href="tel:112">112</a>
+          <span class="medical-mail-dash">--</span>
+          <a class="medical-call-button" href="tel:112">&#9742;</a>
+        </div>
+        <div class="medical-contact-row" th:each="emergencyContact : ${emergencyContacts}">
+          <div class="medical-contact-avatar" th:text="${emergencyContact.fullName != null && !#strings.isEmpty(emergencyContact.fullName) ? #strings.substring(emergencyContact.fullName,0,1) : 'SOS'}">A</div>
+          <div>
+            <strong th:text="${emergencyContact.fullName ?: 'Contact urgence'}">Ahmed Rayen Abecha</strong>
+            <span th:text="${emergencyContact.relationship ?: 'Contact de confiance'}">Contact de confiance</span>
+            <small th:if="${emergencyContact.residence != null && !#strings.isEmpty(emergencyContact.residence)}" th:text="${emergencyContact.residence}">Tunis</small>
+          </div>
+          <a class="medical-contact-phone" th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}" th:text="${emergencyContact.phoneNumber ?: '112'}">+21623444194</a>
+          <span class="medical-mail-dash">&#9993; --</span>
+          <a class="medical-call-button" th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}">&#9742;</a>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <footer class="medical-confidential">&#128274; Donn&eacute;es m&eacute;dicales confidentielles et prot&eacute;g&eacute;es</footer>
+
+  <a class="medical-floating-edit" href="/profile/setup?step=3&amp;returnTo=/dashboard/profile">&#9998; Modifier le dossier m&eacute;dical</a>
+
+  <nav class="medical-mobile-nav">
+    <a href="/dashboard"><span>&#8962;</span>Accueil</a>
+    <a href="/dashboard/medications"><span>&#128138;</span>M&eacute;dicaments</a>
+    <a href="/dashboard/appointments"><span>&#128197;</span>Rendez-vous</a>
+    <a href="/dashboard/vaccines"><span>&#128137;</span>Vaccins</a>
+  </nav>
+</main>
+<script src="/js/emergency-panel.js?v=1"></script>
+<script>
+  const shareButton = document.getElementById('shareMedicalProfile');
+  if (shareButton) {
+    shareButton.addEventListener('click', async () => {
+      const shareData = {
+        title: 'Fiche m&eacute;dicale OlderCare',
+        text: 'Fiche m&eacute;dicale s&eacute;curis&eacute;e OlderCare',
+        url: window.location.href
+      };
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(window.location.href);
+        shareButton.textContent = 'Lien copie';
+        setTimeout(() => shareButton.textContent = 'Partager', 1200);
+      }
+    });
+  }
+</script>
+</body>
+</html>

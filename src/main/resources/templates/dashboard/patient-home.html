@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace patient</title>
+  <link rel="stylesheet" href="/css/style.css?v=dashboard-contacts-visible-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+  <style>
+    @media (max-width: 1100px) {
+      body .bottom-nav.four.dashboard-nav.profile-like-nav {
+        position: fixed !important;
+        left: 18px !important;
+        right: 18px !important;
+        bottom: 10px !important;
+        z-index: 999 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-height: 84px;
+        margin: 0 !important;
+        transform: none !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 4px;
+        padding: 8px;
+        border: 1px solid #dbe6f8;
+        border-radius: 12px;
+        background: rgba(255,255,255,.96);
+        box-shadow: 0 16px 40px rgba(32, 62, 126, .14);
+        backdrop-filter: blur(12px);
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item {
+        min-height: 68px;
+        color: #6f7b99;
+        background: transparent;
+        box-shadow: none;
+        transition: transform .18s ease, background .18s ease, color .18s ease;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active {
+        color: #1557f5;
+        background: #eef5ff;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-symbol,
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active .nav-symbol {
+        color: inherit;
+        background: transparent;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item:active {
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+<body class="has-emergency-rail dashboard-home-body">
+<div th:replace="~{fragments/emergency-rail :: emergencyRail}"></div>
+<main class="app-shell dashboard-shell">
+  <div class="topbar dashboard-topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <div class="bracelet-status-pill"><span></span> Bracelet connect&eacute;</div>
+    <div class="top-actions">
+      <a class="profile-pill-link active" href="/dashboard">Accueil</a>
+      <a class="tiny dashboard-logout" href="/auth/logout">D&eacute;connexion</a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </div>
+
+  <section class="content dashboard-content dashboard-home-content">
+    <header class="dashboard-hero">
+      <div>
+        <div class="step-text">Espace de sant&eacute; personnel</div>
+        <h1><span th:text="${'Bonjour, ' + (profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Bonjour, Ahmed Rayen</span> <span class="dashboard-wave">&#128075;</span></h1>
+        <p>Votre dossier m&eacute;dical personnel est pr&ecirc;t.</p>
+      </div>
+      <div class="dashboard-hero-actions">
+        <a class="dashboard-sos-orb" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
+          <span>*</span>
+          <strong>SOS</strong>
+        </a>
+        <a class="dashboard-edit-mini-link dashboard-edit-under-sos" href="/profile/setup?step=1&amp;returnTo=/dashboard">&#9998; Modifier les donn&eacute;es</a>
+      </div>
+    </header>
+
+    <div class="dashboard-main-grid">
+      <section class="dashboard-card dashboard-patient-card">
+        <div class="dashboard-identity">
+          <div class="dashboard-patient-icon">&#128100;</div>
+          <div>
+            <div class="step-text">Identit&eacute; du patient</div>
+            <h2 th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Ahmed Rayen Abecha</h2>
+            <div class="chip-row">
+              <span class="info-chip" th:if="${age != null}" th:text="${age + ' ans'}">26 ans</span>
+              <span class="info-chip" th:text="${profile.gender == 'FEMALE' ? 'Femme' : (profile.gender == 'MALE' ? 'Homme' : 'Non renseign&eacute;')}">Homme</span>
+              <span class="info-chip" th:text="${profile.nationality ?: 'Nationalit&eacute;'}">Albanie</span>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-action-row is-single">
+          <a class="dashboard-primary-btn" href="/dashboard/profile">&#128203; Ouvrir le dossier m&eacute;dical</a>
+        </div>
+      </section>
+
+      <section class="dashboard-card dashboard-vitals-card">
+        <div class="live-vitals-head">
+          <div class="step-text">Informations vitales</div>
+          <span>En direct</span>
+        </div>
+        <div class="live-vitals-grid">
+          <article class="live-vital-card heart">
+            <div class="live-vital-top">
+              <span class="live-vital-icon">&#10084;</span>
+              <strong>EN DIRECT</strong>
+            </div>
+            <div class="live-vital-value">
+              <span id="dashboardHeartRate">72</span>
+              <small>BPM</small>
+            </div>
+            <div class="heart-bars" aria-hidden="true">
+              <i style="--h: 30%"></i>
+              <i style="--h: 44%"></i>
+              <i style="--h: 66%"></i>
+              <i style="--h: 52%"></i>
+              <i style="--h: 78%"></i>
+              <i style="--h: 46%"></i>
+            </div>
+          </article>
+          <article class="live-vital-card oxygen">
+            <div class="live-vital-top">
+              <span class="live-vital-icon">&#9728;</span>
+              <strong>SpO2</strong>
+            </div>
+            <div class="live-vital-value">
+              <span id="dashboardSpo2">97</span>
+              <small>%</small>
+            </div>
+            <div class="oxygen-meter" aria-hidden="true">
+              <span id="dashboardSpo2Meter"></span>
+            </div>
+          </article>
+        </div>
+        <div class="dashboard-vital-grid">
+          <article class="dashboard-vital danger">
+            <span class="dashboard-vital-icon">&#10084;</span>
+            <div>
+              <small>Allergies</small>
+              <strong th:text="${!#lists.isEmpty(drugAllergyItems) ? drugAllergyItems[0] : (!#lists.isEmpty(otherAllergyItems) ? otherAllergyItems[0] : 'Aucune allergie enregistr&eacute;e')}">Aucune allergie enregistr&eacute;e</strong>
+            </div>
+          </article>
+          <article class="dashboard-vital blue">
+            <span class="dashboard-vital-icon">&#12336;</span>
+            <div>
+              <small>Pathologies chroniques</small>
+              <strong th:text="${chronicConditionSummary}">Diab&egrave;te gestationnel</strong>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Aujourd'hui</h2>
+        <a href="/dashboard/appointments">Voir tout</a>
+      </div>
+      <div class="dashboard-stat-grid">
+        <a class="dashboard-stat-card" href="/dashboard/medications">
+          <span class="dashboard-stat-icon medicine">&#128138;</span>
+          <div>
+            <strong th:text="${#lists.size(medications) + ' m&eacute;dicament'}">0 m&eacute;dicament</strong>
+            <small th:text="${#lists.isEmpty(medications) ? 'Aucun traitement en cours' : medications[0].name}">Aucun traitement en cours</small>
+          </div>
+        </a>
+        <a class="dashboard-stat-card" href="/dashboard/appointments">
+          <span class="dashboard-stat-icon appointment">&#128197;</span>
+          <div>
+            <strong th:text="${#lists.size(appointments) + ' rendez-vous'}">0 rendez-vous</strong>
+            <small th:text="${#lists.isEmpty(appointments) ? 'Aucun rendez-vous &agrave; venir' : appointments[0].doctorName}">Aucun rendez-vous &agrave; venir</small>
+          </div>
+        </a>
+        <a class="dashboard-stat-card" href="/dashboard/vaccines">
+          <span class="dashboard-stat-icon vaccine">&#128137;</span>
+          <div>
+            <strong th:text="${#lists.size(vaccines) + ' vaccin'}">0 vaccin</strong>
+            <small th:text="${#lists.isEmpty(vaccines) ? 'Aucun vaccin enregistr&eacute;' : vaccines[0].vaccineName}">Aucun vaccin enregistr&eacute;</small>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Contacts d'urgence</h2>
+        <a href="/profile/setup?step=2&amp;returnTo=/dashboard">Modifier</a>
+      </div>
+      <div class="dashboard-contact-card">
+        <div class="dashboard-contact-body" th:if="${#lists.isEmpty(emergencyContacts)}">
+          <div class="contact-avatar">112</div>
+          <div>
+            <strong>Aucun contact enregistr&eacute;</strong>
+            <a href="/profile/setup?step=2&amp;returnTo=/dashboard">Ajouter un contact de confiance</a>
+          </div>
+          <a class="call-button" href="tel:112">&#9742;</a>
+        </div>
+        <div class="dashboard-contact-list" th:if="${!#lists.isEmpty(emergencyContacts)}">
+          <div class="dashboard-contact-body" th:each="emergencyContact : ${emergencyContacts}">
+            <div class="contact-avatar" th:text="${emergencyContact.fullName != null && !#strings.isEmpty(emergencyContact.fullName) ? #strings.substring(emergencyContact.fullName,0,1) : 'SOS'}">A</div>
+            <div>
+              <strong th:text="${emergencyContact.fullName ?: 'Contact d''urgence'}">Ahmed Rayen Abecha</strong>
+              <span class="trust-badge" th:text="${emergencyContact.relationship ?: 'Contact de confiance'}">Contact de confiance</span>
+              <span class="tiny muted" th:if="${emergencyContact.residence != null && !#strings.isEmpty(emergencyContact.residence)}" th:text="${emergencyContact.residence}">Tunis</span>
+              <a th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}" th:text="${emergencyContact.phoneNumber ?: '+216 23 444 194'}">+216 23 444 194</a>
+            </div>
+            <a class="call-button" th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}">&#9742;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+</main>
+<section class="bracelet-success-overlay" th:if="${param.bracelet != null}" data-bracelet-success>
+  <article class="bracelet-success-modal">
+    <div class="bracelet-confetti one">+</div>
+    <div class="bracelet-confetti two">+</div>
+    <div class="bracelet-check-ring">
+      <span>&#10003;</span>
+    </div>
+    <h2>Bracelet connect&eacute;<br><strong>avec succ&egrave;s</strong></h2>
+    <div class="bracelet-success-line"><span></span></div>
+    <p>Votre bracelet a &eacute;t&eacute; connect&eacute; avec succ&egrave;s.</p>
+    <button type="button" class="bracelet-modal-button" data-close-bracelet>Continuer</button>
+  </article>
+</section>
+<nav class="medical-mobile-nav shared-dashboard-nav">
+  <a class="active" href="/dashboard"><span>&#8962;</span>Accueil</a>
+  <a href="/dashboard/medications"><span>&#128138;</span>M&eacute;dicaments</a>
+  <a href="/dashboard/appointments"><span>&#128197;</span>Rendez-vous</a>
+  <a href="/dashboard/vaccines"><span>&#128137;</span>Vaccins</a>
+</nav>
+<script src="/js/emergency-panel.js?v=1"></script>
+<script>
+  (() => {
+    const rateEl = document.getElementById('dashboardHeartRate');
+    const spo2El = document.getElementById('dashboardSpo2');
+    const spo2Meter = document.getElementById('dashboardSpo2Meter');
+    const bars = Array.from(document.querySelectorAll('.heart-bars i'));
+    if (!rateEl || !spo2El || !spo2Meter || bars.length === 0) {
+      return;
+    }
+
+    let currentRate = 72;
+    let currentSpo2 = 97;
+    const normalRates = [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79];
+    const normalSpo2 = [95, 96, 97, 98, 99];
+
+    const updateVitals = () => {
+      const target = normalRates[Math.floor(Math.random() * normalRates.length)];
+      const spo2Target = normalSpo2[Math.floor(Math.random() * normalSpo2.length)];
+      currentRate += Math.sign(target - currentRate) * Math.min(Math.abs(target - currentRate), 3);
+      currentSpo2 += Math.sign(spo2Target - currentSpo2) * Math.min(Math.abs(spo2Target - currentSpo2), 1);
+      rateEl.textContent = currentRate;
+      spo2El.textContent = currentSpo2;
+      spo2Meter.style.width = `${currentSpo2}%`;
+
+      bars.forEach((bar, index) => {
+        const wave = Math.sin((Date.now() / 360) + index) * 16;
+        const height = Math.max(26, Math.min(88, currentRate - 34 + wave));
+        bar.style.setProperty('--h', `${height}%`);
+        bar.classList.toggle('is-peak', index === 4 || height > 70);
+      });
+    };
+
+    updateVitals();
+    setInterval(updateVitals, 2000);
+  })();
+
+  (() => {
+    const overlay = document.querySelector('[data-bracelet-success]');
+    if (!overlay) {
+      return;
+    }
+    const close = () => overlay.classList.add('is-hidden');
+    overlay.querySelector('[data-close-bracelet]')?.addEventListener('click', close);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        close();
+      }
+    });
+    setTimeout(close, 4200);
+  })();
+</script>
+</body>
+</html>

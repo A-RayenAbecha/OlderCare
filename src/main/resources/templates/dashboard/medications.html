@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M&eacute;dicaments</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+  <style>
+    @media (max-width: 1100px) {
+      body .bottom-nav.four.dashboard-nav.profile-like-nav {
+        position: fixed !important;
+        left: 18px !important;
+        right: 18px !important;
+        bottom: 10px !important;
+        z-index: 999 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-height: 84px;
+        margin: 0 !important;
+        transform: none !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 4px;
+        padding: 8px;
+        border: 1px solid #dbe6f8;
+        border-radius: 12px;
+        background: rgba(255,255,255,.96);
+        box-shadow: 0 16px 40px rgba(32, 62, 126, .14);
+        backdrop-filter: blur(12px);
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item {
+        min-height: 68px;
+        color: #6f7b99;
+        background: transparent;
+        box-shadow: none;
+        transition: transform .18s ease, background .18s ease, color .18s ease;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active {
+        color: #1557f5;
+        background: #eef5ff;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-symbol,
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item.active .nav-symbol {
+        color: inherit;
+        background: transparent;
+      }
+      body .bottom-nav.four.dashboard-nav.profile-like-nav .nav-item:active {
+        transform: translateY(-2px);
+      }
+    }
+  </style>
+</head>
+<body class="has-emergency-rail dashboard-home-body">
+<div th:replace="~{fragments/emergency-rail :: emergencyRail}"></div>
+<main class="app-shell dashboard-shell">
+  <div class="topbar dashboard-topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <div class="bracelet-status-pill"><span></span> Bracelet connect&eacute;</div>
+    <div class="top-actions">
+      <a class="profile-pill-link" href="/dashboard">Accueil</a>
+      <a class="tiny dashboard-logout" href="/auth/logout">D&eacute;connexion</a>
+      <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
+    </div>
+  </div>
+
+  <section class="content dashboard-content dashboard-subpage">
+    <header class="dashboard-page-hero">
+      <div>
+        <div class="step-text">Espace de sant&eacute; personnel</div>
+        <h1>Mes m&eacute;dicaments</h1>
+        <p>Ajoutez et mettez &agrave; jour les traitements li&eacute;s au dossier patient.</p>
+      </div>
+      <a class="dashboard-sos-orb small" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
+        <span>*</span>
+        <strong>SOS</strong>
+      </a>
+    </header>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Nouveau traitement</h2>
+      </div>
+      <form method="post" action="/dashboard/medications" class="dashboard-card dashboard-form-card">
+        <div class="field">
+          <label>Nom du m&eacute;dicament</label>
+          <input name="name" placeholder="Aspirine" required>
+        </div>
+        <div class="field">
+          <label>Dosage</label>
+          <input name="dosage" placeholder="1 comprim&eacute;" required>
+        </div>
+        <div class="field">
+          <label>Fr&eacute;quence</label>
+          <select name="frequency" required>
+            <option value="" disabled selected>Choisir une fr&eacute;quence</option>
+            <option th:each="frequencyOption : ${frequencyOptions}" th:value="${frequencyOption}" th:text="${frequencyOption}">Chaque matin</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date de d&eacute;but</label>
+          <input type="date" name="startDate" required>
+        </div>
+        <button class="dashboard-primary-btn">Enregistrer</button>
+      </form>
+    </section>
+
+    <section class="dashboard-section">
+      <div class="dashboard-section-head">
+        <h2>Traitements enregistr&eacute;s</h2>
+        <span class="dashboard-count-pill" th:text="${#lists.size(medications) + ' total'}">0 total</span>
+      </div>
+      <div th:if="${#lists.isEmpty(medications)}" class="dashboard-empty-card">
+        <strong>Aucun m&eacute;dicament</strong>
+        <p>Aucun traitement n'est encore li&eacute; &agrave; ce dossier.</p>
+      </div>
+      <div class="dashboard-record-grid">
+        <form class="dashboard-card dashboard-edit-card" th:each="medication : ${medications}" method="post" th:action="@{'/dashboard/medications/' + ${medication.id}}">
+          <div class="dashboard-record-head">
+            <div class="dashboard-date-badge" th:text="${medication.startDate != null ? #temporals.format(medication.startDate, 'dd/MM') : '--/--'}">08/00</div>
+            <div>
+              <h3 th:text="${medication.name}">M&eacute;dicament</h3>
+              <p th:text="${medication.dosage + ' - ' + medication.frequency}">Dose</p>
+            </div>
+          </div>
+          <div class="dashboard-edit-fields">
+            <div class="field">
+              <label>Nom</label>
+              <input name="name" th:value="${medication.name}" required>
+            </div>
+            <div class="field">
+              <label>Dosage</label>
+              <input name="dosage" th:value="${medication.dosage}" required>
+            </div>
+            <div class="field">
+              <label>Fr&eacute;quence</label>
+              <select name="frequency" required>
+                <option th:each="frequencyOption : ${frequencyOptions}" th:value="${frequencyOption}" th:text="${frequencyOption}" th:selected="${frequencyOption == medication.frequency}">Chaque matin</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>D&eacute;but</label>
+              <input type="date" name="startDate" th:value="${medication.startDate}" required>
+            </div>
+            <div class="field">
+              <label>Fin</label>
+              <input type="date" name="endDate" th:value="${medication.endDate}">
+            </div>
+          </div>
+          <button class="dashboard-outline-btn">Mettre &agrave; jour</button>
+        </form>
+      </div>
+    </section>
+  </section>
+
+</main>
+<nav class="medical-mobile-nav shared-dashboard-nav">
+  <a href="/dashboard"><span>&#8962;</span>Accueil</a>
+  <a class="active" href="/dashboard/medications"><span>&#128138;</span>M&eacute;dicaments</a>
+  <a href="/dashboard/appointments"><span>&#128197;</span>Rendez-vous</a>
+  <a href="/dashboard/vaccines"><span>&#128137;</span>Vaccins</a>
+</nav>
+<script src="/js/emergency-panel.js?v=1"></script>
+</body>
+</html>

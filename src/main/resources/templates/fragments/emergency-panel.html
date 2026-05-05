@@ -1,0 +1,7 @@
+<div th:fragment="emergencyInfoPanel" class="emergency-info-widget">
+  <a class="emergency-menu-trigger"
+     th:href="${emergencyInfoUrl ?: '/dashboard/emergency-info'}"
+     aria-label="Afficher les informations d'urgence">
+    <span aria-hidden="true">...</span>
+  </a>
+</div>

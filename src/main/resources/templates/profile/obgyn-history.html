@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ant&eacute;c&eacute;dents gyn&eacute;co-obst&eacute;triques</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body><main class="app-shell">
+  <div class="topbar"><button class="icon-button" onclick="history.back()">&larr;</button><strong>Profil de sant&eacute;</strong><button class="icon-button">&#8984;</button></div>
+  <section class="content">
+    <h1 class="title-lg">Ant&eacute;c&eacute;dents gyn&eacute;co-obst&eacute;triques</h1><p class="subtitle">Pour les patientes, ajoutez les d&eacute;tails de grossesse, d'accouchement, de complications et de pathologies.</p>
+    <form id="obgyn" class="form-stack">
+      <input type="hidden" name="chronicConditions" th:value="${history.chronicConditions}">
+      <input type="hidden" name="surgicalProcedures" th:value="${history.surgicalProcedures}">
+      <div class="field"><label>Grossesses</label><input type="number" min="0" name="pregnancies" value="0"></div>
+      <div class="field"><label>Accouchements</label><input type="number" min="0" name="accouchements" value="0"></div>
+      <div class="section-label">Complications</div>
+      <div class="chip-row"><label class="chip"><input type="checkbox" name="ob" value="Pr&eacute;&eacute;clampsie"><span>Pr&eacute;&eacute;clampsie</span></label><label class="chip"><input type="checkbox" name="ob" value="Diab&egrave;te gestationnel"><span>Diab&egrave;te gestationnel</span></label></div>
+      <div class="section-label">Pathologies</div>
+      <div class="chip-row"><label class="chip"><input type="checkbox" name="ob" value="Endom&eacute;triose"><span>Endom&eacute;triose</span></label><label class="chip"><input type="checkbox" name="ob" value="SOPK"><span>SOPK</span></label></div>
+      <div class="field"><label>Notes gyn&eacute;co-obst&eacute;triques existantes</label><textarea id="obGynNotes" th:text="${history.obGynHistory}" placeholder="Grossesses, accouchements, complications, SOPK..."></textarea></div>
+      <input type="hidden" name="obGynHistory" id="obGynHistory">
+    </form>
+  </section>
+  <div class="bottom-actions"><button class="save-btn" data-draft="obgyn">&#9635;<span>ENREGISTRER</span></button><button class="primary-btn" form="obgyn">CONTINUER &rarr;</button></div>
+</main><script th:src="@{/js/main.js}"></script><script>obgyn.addEventListener('submit', e => { e.preventDefault(); const selected = collectChecked('input[name=ob]'); const enteredCounts = obgyn.pregnancies.value !== '0' || obgyn.accouchements.value !== '0'; const notes = obGynNotes.value.trim(); const generated = enteredCounts || selected ? `Grossesses: ${obgyn.pregnancies.value}, Accouchements: ${obgyn.accouchements.value}${selected ? ', ' + selected : ''}` : ''; obGynHistory.value = [notes, generated].filter(Boolean).join(' | '); postForm('/profile/medical-history', new FormData(obgyn), '/profile/setup?step=6'); });</script></body></html>

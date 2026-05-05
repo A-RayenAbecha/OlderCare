@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Inscription patient</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body>
+<main class="app-shell">
+  <div class="topbar"><a class="icon-button" href="/auth/welcome">&larr;</a><strong>Inscription patient</strong><span></span></div>
+  <section class="content">
+    <h1 class="title-lg">Cr&eacute;er le profil<br>patient</h1>
+    <p class="subtitle">Compl&eacute;tez votre profil de sant&eacute; et connectez le code inscrit sur votre bracelet. La valeur QR est stock&eacute;e de mani&egrave;re priv&eacute;e et n'est jamais affich&eacute;e.</p>
+    <p th:if="${error}" th:text="${error}" class="notice"></p>
+    <form id="patientSignup" method="post" action="/register" class="form-stack">
+      <div class="section-label">Donn&eacute;es civiles</div>
+      <div class="field"><label>Nom</label><input name="surname" required></div>
+      <div class="field"><label>Pr&eacute;nom</label><input name="firstName" required></div>
+      <div class="field"><label>E-mail</label><input type="email" name="email" placeholder="patient@example.com" required></div>
+      <div class="field"><label>Sexe</label><select name="gender"><option value="MALE">Homme</option><option value="FEMALE">Femme</option></select></div>
+      <div class="field"><label>Date de naissance</label><input type="date" name="dateOfBirth" required></div>
+      <div class="field"><label>Groupe sanguin</label><select name="bloodType" required><option th:each="bloodType : ${bloodTypeOptions}" th:value="${bloodType}" th:text="${bloodType}">O+</option></select></div>
+      <div class="field"><label>Situation familiale</label><select name="maritalStatus"><option value="SINGLE">C&eacute;libataire</option><option value="MARRIED">Mari&eacute;(e)</option><option value="DIVORCED">Divorc&eacute;(e)</option><option value="WIDOWED">Veuf/Veuve</option></select></div>
+      <div class="field"><label>Nationalit&eacute;</label><select name="nationality" required><option value="">Choisir une nationalit&eacute;</option><option th:each="nationality : ${nationalities}" th:value="${nationality}" th:text="${nationality}">Tunisie</option></select></div>
+      <div class="section-label">Coordonn&eacute;es et donn&eacute;es d&eacute;mographiques</div>
+      <div class="field"><label>Profession</label><input name="occupation" required></div>
+      <div class="field"><label>Nombre d'enfants</label><input type="number" name="numChildren" min="0" value="0" required></div>
+      <div class="field"><label>Couverture sociale</label><select name="socialSecurityType" required><option th:each="coverage : ${socialSecurityOptions}" th:value="${coverage}" th:text="${coverage}">CNAM</option></select></div>
+      <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input name="phoneNumber" required></div>
+      <div class="field"><label>R&eacute;gion</label><input name="region" required></div>
+      <div class="field"><label>Adresse</label><textarea name="address" required></textarea></div>
+      <div class="field"><label>Code postal</label><input name="postalCode" required></div>
+      <div class="section-label">&#9888; Contacts d'urgence</div>
+      <div class="emergency-contact-grid">
+        <div class="emergency-contact-form white-card">
+          <div class="emergency-contact-title"><strong>Contact 1</strong><span class="soft-pill">Principal</span></div>
+          <div class="field"><label>Nom complet</label><input name="emergencyName" placeholder="ex. Jean Lefebvre"></div>
+          <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship" placeholder="ex. Fils, conjointe, voisin"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" placeholder="+216 00 000 000"></div>
+          <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence" placeholder="ex. Tunis, La Marsa"></div>
+        </div>
+        <div class="emergency-contact-form white-card">
+          <div class="emergency-contact-title"><strong>Contact 2</strong></div>
+          <div class="field"><label>Nom complet</label><input name="emergencyName"></div>
+          <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone"></div>
+          <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence"></div>
+        </div>
+        <div class="emergency-contact-form white-card">
+          <div class="emergency-contact-title"><strong>Contact 3</strong></div>
+          <div class="field"><label>Nom complet</label><input name="emergencyName"></div>
+          <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone"></div>
+          <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence"></div>
+        </div>
+      </div>
+      <div class="section-label">&#9829; Ant&eacute;c&eacute;dents m&eacute;dicaux</div>
+      <div class="choice-list">
+        <label class="choice">Hypertension art&eacute;rielle <input type="checkbox" value="Hypertension art&eacute;rielle" name="condition"></label>
+        <label class="choice">Hypercholest&eacute;rol&eacute;mie <input type="checkbox" value="Hypercholest&eacute;rol&eacute;mie" name="condition"></label>
+        <label class="choice">Maladie cardiaque <input type="checkbox" value="Maladie cardiaque" name="condition"></label>
+        <label class="choice">AVC <input type="checkbox" value="AVC" name="condition"></label>
+      </div>
+      <div class="choice-list">
+        <label class="choice">Diab&egrave;te <input id="diabetesToggle" type="checkbox"></label>
+        <div id="diabetesTypePanel" class="detail-panel">
+          <span class="detail-title">Type de diab&egrave;te</span>
+          <div class="chip-row">
+            <label class="chip"><input type="radio" value="Diab&egrave;te type 1" name="diabetesType"><span>Type 1</span></label>
+            <label class="chip"><input type="radio" value="Diab&egrave;te type 2" name="diabetesType" checked><span>Type 2</span></label>
+            <label class="chip"><input type="radio" value="Diab&egrave;te gestationnel" name="diabetesType"><span>Gestationnel</span></label>
+          </div>
+        </div>
+        <label class="choice">Troubles thyro&iuml;diens <input type="checkbox" value="Troubles thyro&iuml;diens" name="condition"></label>
+      </div>
+      <div class="chip-row">
+        <label class="chip"><input type="checkbox" value="Asthme" name="condition"><span>Asthme</span></label>
+        <label class="chip"><input type="checkbox" value="BPCO" name="condition"><span>BPCO</span></label>
+        <label class="chip"><input type="checkbox" value="Apn&eacute;e du sommeil" name="condition"><span>Apn&eacute;e du sommeil</span></label>
+        <label class="chip"><input type="checkbox" value="RGO" name="condition"><span>RGO</span></label>
+        <label class="chip"><input type="checkbox" value="Maladie de Crohn" name="condition"><span>Crohn</span></label>
+        <label class="chip"><input type="checkbox" value="SII" name="condition"><span>SII</span></label>
+        <label class="chip"><input type="checkbox" value="&Eacute;pilepsie/Convulsions" name="condition"><span>&Eacute;pilepsie</span></label>
+        <label class="chip"><input type="checkbox" value="Migraines" name="condition"><span>Migraines</span></label>
+        <label class="chip"><input type="checkbox" value="Scl&eacute;rose en plaques" name="condition"><span>Scl&eacute;rose</span></label>
+        <label class="chip"><input type="checkbox" value="Anxi&eacute;t&eacute;" name="condition"><span>Anxi&eacute;t&eacute;</span></label>
+        <label class="chip"><input type="checkbox" value="D&eacute;pression" name="condition"><span>D&eacute;pression</span></label>
+        <label class="chip"><input type="checkbox" value="TSPT" name="condition"><span>TSPT</span></label>
+      </div>
+      <input type="hidden" name="chronicConditions" id="chronicConditions">
+      <div class="field"><label>Ant&eacute;c&eacute;dents chirurgicaux</label><textarea name="surgicalProcedures" placeholder="Appendicectomie, C&eacute;sarienne, proth&egrave;se du genou..."></textarea></div>
+      <div class="field"><label>Ant&eacute;c&eacute;dents gyn&eacute;co-obst&eacute;triques</label><textarea name="obGynHistory" placeholder="Grossesses, accouchements, complications, SOPK..."></textarea></div>
+      <div class="section-label">&#9888; Allergies et mode de vie</div>
+      <div class="field dynamic-fieldset" data-allergy-group data-list="signupDrugAllergyList" data-hidden="drugAllergies">
+        <label>Allergies m&eacute;dicamenteuses</label>
+        <div id="signupDrugAllergyList" class="dynamic-list" data-placeholder="P&eacute;nicilline, ibuprof&egrave;ne...">
+          <div class="allergy-row">
+            <input class="allergy-input" type="text" placeholder="P&eacute;nicilline, ibuprof&egrave;ne...">
+            <button type="button" class="icon-button small danger" data-remove-allergy aria-label="Supprimer l'allergie">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-row-btn" data-add-allergy data-target="signupDrugAllergyList" data-placeholder="P&eacute;nicilline, ibuprof&egrave;ne..."><span>+</span> Ajouter une autre allergie m&eacute;dicamenteuse</button>
+        <input type="hidden" name="drugAllergies" id="drugAllergies">
+      </div>
+      <div class="field dynamic-fieldset" data-allergy-group data-list="signupOtherAllergyList" data-hidden="otherAllergies">
+        <label>Autres allergies</label>
+        <div id="signupOtherAllergyList" class="dynamic-list" data-placeholder="Latex, iode, produit de contraste...">
+          <div class="allergy-row">
+            <input class="allergy-input" type="text" placeholder="Latex, iode, produit de contraste...">
+            <button type="button" class="icon-button small danger" data-remove-allergy aria-label="Supprimer l'allergie">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-row-btn" data-add-allergy data-target="signupOtherAllergyList" data-placeholder="Latex, iode, produit de contraste..."><span>+</span> Ajouter une autre allergie</button>
+        <input type="hidden" name="otherAllergies" id="otherAllergies">
+      </div>
+      <div class="field"><label>Tabac</label><select name="smokingStatus"><option>Jamais fum&eacute;</option><option>Ancien fumeur</option><option>Fumeur actuel</option></select></div>
+      <div class="field"><label>Alcool</label><select name="alcoholConsumption"><option>Non buveur</option><option>Occasionnel/social</option><option>Consommation quotidienne</option></select></div>
+      <div class="section-label">Connexion du bracelet</div>
+      <div class="field">
+        <label>Code bracelet</label>
+        <input type="password" name="braceletCode" placeholder="Code inscrit sur le bracelet" autocomplete="off" required>
+      </div>
+      <button class="primary-btn">CONNECTER LE BRACELET</button>
+    </form>
+  </section>
+</main>
+<script th:src="@{/js/main.js}"></script>
+<script>
+  const patientSignupForm = document.getElementById('patientSignup');
+  patientSignupForm.addEventListener('submit', () => {
+    const conditions = collectCheckedValues('input[name=condition]');
+    if (diabetesToggle.checked) {
+      const selectedType = document.querySelector('input[name=diabetesType]:checked');
+      conditions.push(selectedType ? selectedType.value : 'Diab&egrave;te type 2');
+    }
+    chronicConditions.value = conditions.join(', ');
+    syncAllergyFields(patientSignupForm);
+  });
+</script>
+</body>
+</html>

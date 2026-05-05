@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>&Agrave; propos de vous</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body>
+<main class="app-shell">
+  <div class="topbar"><button class="icon-button" onclick="history.back()">&larr;</button><strong class="top-title">Profil de sant&eacute;</strong><button class="icon-button">&#8984;</button></div>
+  <section class="content">
+    <h1 class="title-lg">&Agrave; propos de vous</h1><p class="subtitle">Renseignez vos informations d'identit&eacute; pour s&eacute;curiser votre dossier de sant&eacute;.</p>
+    <form id="civil1" class="form-stack">
+      <div class="field"><label>Nom</label><input name="surname" th:value="${profile.surname}" placeholder="ex. Ben Ali" required></div>
+      <div class="field"><label>Pr&eacute;nom</label><input name="firstName" th:value="${profile.firstName}" placeholder="ex. Amel" required></div>
+      <div class="field"><label>Sexe</label><div class="segmented"><label><input type="radio" name="gender" value="MALE" th:checked="${profile.gender == 'MALE'}" required><span>Homme</span></label><label><input type="radio" name="gender" value="FEMALE" th:checked="${profile.gender == 'FEMALE'}"><span>Femme</span></label></div></div>
+      <div class="field"><label>Date de naissance</label><input type="date" name="dateOfBirth" th:value="${profile.dateOfBirth}" required></div>
+      <div class="field"><label>Groupe sanguin</label><select name="bloodType" required><option th:each="bloodType : ${bloodTypeOptions}" th:value="${bloodType}" th:text="${bloodType}" th:selected="${profile.bloodType == bloodType || (profile.bloodType == null && bloodType == 'Inconnu')}">O+</option></select></div>
+      <div class="field"><label>Situation familiale</label><select name="maritalStatus" required><option value="SINGLE" th:selected="${profile.maritalStatus == 'SINGLE'}">C&eacute;libataire</option><option value="MARRIED" th:selected="${profile.maritalStatus == 'MARRIED'}">Mari&eacute;(e)</option><option value="DIVORCED" th:selected="${profile.maritalStatus == 'DIVORCED'}">Divorc&eacute;(e)</option><option value="WIDOWED" th:selected="${profile.maritalStatus == 'WIDOWED'}">Veuf/Veuve</option></select></div>
+      <div class="field"><label>Nationalit&eacute;</label><select name="nationality" required><option value="">Choisir une nationalit&eacute;</option><option th:each="nationality : ${nationalities}" th:value="${nationality}" th:text="${nationality}" th:selected="${profile.nationality == nationality}">Tunisie</option></select></div>
+      <div class="blue-panel" style="background:linear-gradient(135deg,#dfe5ff,#cbd6ff);color:#273050"><h3>Confidentialit&eacute; d'abord</h3><p>Vos donn&eacute;es sont chiffr&eacute;es avec des protocoles de niveau clinique et ne sont jamais partag&eacute;es sans consentement.</p></div>
+    </form>
+  </section>
+  <div class="bottom-actions"><button class="save-btn" data-draft="civil1">&#9635;<span>ENREGISTRER</span></button><button class="primary-btn" form="civil1">TERMINER &rarr;</button></div>
+</main>
+<script th:src="@{/js/main.js}"></script><script>civil1.addEventListener('submit', e => { e.preventDefault(); const params = new URLSearchParams(window.location.search); const nextUrl = params.get('returnTo') || '/profile/setup?step=2'; postForm('/profile/civil-data-1', new FormData(civil1), nextUrl); });</script>
+</body></html>

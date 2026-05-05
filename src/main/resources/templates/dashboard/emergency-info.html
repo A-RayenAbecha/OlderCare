@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informations d'urgence</title>
+  <link rel="stylesheet" href="/css/style.css?v=video-logo-color-1">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body class="emergency-info-page-body">
+<main class="emergency-info-page-shell" data-emergency-page>
+  <div class="topbar dashboard-topbar emergency-info-topbar">
+    <strong class="brand brand-with-video"><video class="brand-video" src="/videos/oldercare-logo.mp4" autoplay muted loop playsinline aria-label="OlderCare"></video></strong>
+    <div class="top-actions">
+      <a class="profile-pill-link" th:href="${cancelUrl ?: '/dashboard'}">Retour</a>
+      <a class="emergency-menu-trigger emergency-page-menu" th:href="${sosUrl ?: '/dashboard/sos'}" aria-label="SOS"><span>*</span></a>
+    </div>
+  </div>
+  <header class="emergency-info-head emergency-page-head">
+    <div>
+      <span class="emergency-info-pill" data-location-status>LOCALISATION GPS EN ATTENTE</span>
+      <h1>Informations d'urgence</h1>
+      <p>Consultez rapidement la localisation, les contacts et les urgences les plus proches.</p>
+    </div>
+    <a class="emergency-page-sos" th:href="${sosUrl ?: '/dashboard/sos'}"><span>*</span><strong>SOS</strong></a>
+  </header>
+
+  <div class="emergency-info-grid">
+    <article class="emergency-info-card emergency-location-card">
+      <div class="sos-map-grid"></div>
+      <div class="emergency-location-content">
+        <strong data-location-title>Recherche de votre position</strong>
+        <span data-location-coords>Autorisez la localisation dans le navigateur.</span>
+        <a data-maps-link href="#" target="_blank" rel="noreferrer">Ouvrir dans Maps</a>
+      </div>
+    </article>
+
+    <article class="emergency-info-card emergency-identity-card">
+      <div>
+        <span>Identit&eacute; patient</span>
+        <strong th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Patient</strong>
+      </div>
+      <div class="emergency-blood-card">
+        <span>Groupe sanguin</span>
+        <strong th:text="${profile.bloodType ?: 'Inconnu'}">B+</strong>
+      </div>
+    </article>
+
+    <section class="emergency-info-card emergency-message-card">
+      <span>Message SOS</span>
+      <p data-sos-message
+         th:attr="data-base-message=${sosMessage ?: 'SOS : aide immediate requise. Veuillez me contacter ou venir a ma position.'}"
+         th:text="${sosMessage ?: 'SOS : aide immediate requise. Veuillez me contacter ou venir a ma position.'}">SOS : aide imm&eacute;diate requise. Veuillez me contacter ou venir &agrave; ma position.</p>
+    </section>
+
+    <section class="emergency-info-card emergency-nearby-card">
+      <div class="emergency-nearby-head">
+        <div>
+          <span>Urgences proches</span>
+          <strong>5 plus proches de vous</strong>
+        </div>
+        <b data-nearby-status>En attente GPS</b>
+      </div>
+      <div class="emergency-nearby-table-wrap">
+        <table class="emergency-nearby-table">
+          <thead>
+          <tr>
+            <th>Lieu</th>
+            <th>Distance</th>
+            <th>Maps</th>
+          </tr>
+          </thead>
+          <tbody data-nearby-rows>
+          <tr>
+            <td colspan="3">Autorisez la localisation pour afficher les urgences proches.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="emergency-info-card emergency-contacts-card">
+      <span>Contacts d'urgence</span>
+      <div class="emergency-contact-row" th:if="${#lists.isEmpty(emergencyContacts)}">
+        <div>
+          <strong>Service d'urgence</strong>
+          <small>Aucun contact personnel enregistr&eacute;</small>
+        </div>
+        <a href="tel:112">112</a>
+      </div>
+      <div class="emergency-contact-row" th:each="emergencyContact : ${emergencyContacts}">
+        <div>
+          <strong th:text="${emergencyContact.fullName ?: 'Contact urgence'}">Contact urgence</strong>
+          <small th:text="${emergencyContact.relationship ?: 'Contact de confiance'}">Contact de confiance</small>
+          <small th:if="${emergencyContact.residence != null && !#strings.isEmpty(emergencyContact.residence)}" th:text="${emergencyContact.residence}">Tunis</small>
+        </div>
+        <a th:href="${emergencyContact.phoneNumber != null && !#strings.isEmpty(emergencyContact.phoneNumber) ? 'tel:' + emergencyContact.phoneNumber : 'tel:112'}"
+           th:text="${emergencyContact.phoneNumber ?: '112'}">112</a>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="/js/emergency-panel.js?v=2"></script>
+</body>
+</html>

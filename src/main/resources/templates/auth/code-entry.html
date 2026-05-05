@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+</head>
+<body>
+<main class="app-shell">
+  <div class="topbar">
+    <a class="icon-button" href="/auth/welcome">&larr;</a>
+    <strong>Connexion s&eacute;curis&eacute;e</strong>
+    <span></span>
+  </div>
+  <section class="content">
+    <h1 class="title-lg">Entrez votre<br>code bracelet</h1>
+    <p class="subtitle">Utilisez le code unique inscrit sur votre bracelet, puis choisissez Personnel m&eacute;dical, Patient ou Autre.</p>
+
+    <p th:if="${error}" th:text="${error}" class="notice"></p>
+
+    <form method="post" action="/auth/login-code" class="form-panel white-card form-stack">
+      <div class="field">
+        <label>Code bracelet</label>
+        <input type="password" name="code" placeholder="BRACELET-001" autocomplete="off" required>
+      </div>
+      <button class="primary-btn">SE CONNECTER</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

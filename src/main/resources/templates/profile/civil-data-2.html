@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Coordonn&eacute;es</title><link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}"></head>
+<body><main class="app-shell">
+  <div class="topbar"><button class="icon-button" onclick="history.back()">&larr;</button><strong>Profil de sant&eacute;</strong><button class="icon-button">&#8984;</button></div>
+  <section class="content">
+    <h1 class="title-lg">Coordonn&eacute;es et<br>d&eacute;mographie</h1><p class="subtitle">Aidez-nous &agrave; compl&eacute;ter votre dossier avec vos informations professionnelles et r&eacute;sidentielles.</p>
+    <form id="civil2" class="form-stack">
+      <div class="section-label">&#9632; Emploi et famille</div>
+      <div class="field"><label>Profession</label><input name="occupation" th:value="${contact.occupation}" placeholder="ex. ing&eacute;nieur logiciel" required></div>
+      <div class="field"><label>Nombre d'enfants</label><input type="number" name="numChildren" min="0" th:value="${contact.numChildren ?: 0}" required></div>
+      <div class="field"><label>Couverture sociale</label><select name="socialSecurityType"><option th:each="coverage : ${socialSecurityOptions}" th:value="${coverage}" th:text="${coverage}" th:selected="${contact.socialSecurityType == coverage}">CNAM</option></select></div>
+      <div class="section-label">&#9743; Communication</div>
+      <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input name="phoneNumber" th:value="${contact.phoneNumber}" placeholder="+216 00 000 000" required></div>
+      <div class="section-label">&#9888; Contacts d'urgence</div>
+      <div class="field">
+        <label>Message SOS personnalis&eacute;</label>
+        <textarea name="sosMessage" th:text="${sosMessage}" placeholder="SOS : j'ai besoin d'une aide imm&eacute;diate. Veuillez venir &agrave; ma position."></textarea>
+      </div>
+      <div class="emergency-contact-grid">
+        <div class="emergency-contact-form white-card" th:each="emergencyContact, iter : ${emergencyContacts}">
+          <div class="emergency-contact-title">
+            <strong th:text="${'Contact ' + (iter.index + 1)}">Contact 1</strong>
+            <span th:if="${iter.index == 0}" class="soft-pill">Principal</span>
+          </div>
+          <div class="field"><label>Nom complet</label><input name="emergencyName" th:value="${emergencyContact.fullName}" placeholder="ex. Jean Lefebvre"></div>
+          <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship" th:value="${emergencyContact.relationship}" placeholder="ex. Fils, conjointe, voisin"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" th:value="${emergencyContact.phoneNumber}" placeholder="+216 00 000 000"></div>
+          <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence" th:value="${emergencyContact.residence}" placeholder="ex. Tunis, La Marsa"></div>
+        </div>
+      </div>
+      <div class="section-label">&#8982; R&eacute;sidence principale</div>
+      <div class="field"><label>R&eacute;gion</label><input name="region" th:value="${contact.region}" placeholder="Grand Tunis" required></div>
+      <div class="field"><label>Code postal</label><input name="postalCode" th:value="${contact.postalCode}" placeholder="1000" required></div>
+      <div class="field"><label>Adresse</label><textarea name="address" th:text="${contact.address}" placeholder="Rue, num&eacute;ro du b&acirc;timent, appartement..." required></textarea></div>
+      <div class="notice">Vos informations professionnelles et de contact facilitent la coordination d'urgence et le traitement des assurances.</div>
+    </form>
+  </section>
+  <div class="bottom-actions"><button class="save-btn" data-draft="civil2">&#9635;<span>ENREGISTRER</span></button><button class="primary-btn" form="civil2">TERMINER &rarr;</button></div>
+</main><script th:src="@{/js/main.js}"></script><script>civil2.addEventListener('submit', e => { e.preventDefault(); const params = new URLSearchParams(window.location.search); const nextUrl = params.get('returnTo') || '/profile/setup?step=3'; postForm('/profile/civil-data-2', new FormData(civil2), nextUrl); });</script></body></html>
