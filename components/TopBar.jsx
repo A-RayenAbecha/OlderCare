@@ -5,8 +5,8 @@ const Link = ({ href, children, ...props }) => <a href={href} {...props}>{childr
 export default function TopBar({ active = "accueil", readonly = false, emergencyHref = "/dashboard/emergency-info" }) {
   return (
     <header className="topbar">
-      <Link className="brand-video-link" href={readonly ? "/readonly/profile" : "/dashboard"}>
-        <video src="/videos/oldercare-logo.mp4" autoPlay muted loop playsInline aria-label="OlderCare" />
+      <Link className="brand-logo-link" href={readonly ? "/readonly/profile" : "/dashboard"}>
+        <img src="/images/oldercare-mark.png" alt="OlderCare" />
       </Link>
       <div className="bracelet-pill"><span /> Bracelet connecté</div>
       <nav className="top-actions">

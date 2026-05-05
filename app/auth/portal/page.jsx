@@ -19,13 +19,13 @@ export default async function PortalPage({ searchParams }) {
       <main className="app-shell">
         <div className="topbar">
           <Link className="icon-button" href="/auth/logout">←</Link>
-          <strong className="brand brand-with-video">
-            <video className="brand-video" src="/videos/oldercare-logo.mp4" autoPlay muted loop playsInline aria-label="OlderCare" />
-          </strong>
+        <strong className="brand brand-with-video">
+          <img className="brand-logo-img" src="/images/oldercare-mark.png" alt="OlderCare" />
+        </strong>
           <div className="bracelet-status-pill"><span /> Bracelet connecté</div>
         </div>
         <section className="content portal-access-page">
-          <video className="brand-wordmark brand-video-wordmark" src="/videos/oldercare-logo.mp4" autoPlay muted loop playsInline aria-label="OlderCare logo" />
+          <img className="brand-wordmark brand-logo-wordmark" src="/images/oldercare-mark.png" alt="OlderCare" />
           <h1 className="title-lg">Choisir le<br />type d'accès</h1>
           <p className="subtitle">Sélectionnez qui utilise ce code bracelet.</p>
           <div className="portal-choice-grid">

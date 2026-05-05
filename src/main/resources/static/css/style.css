@@ -92,28 +92,51 @@ button, input, select, textarea { font: inherit; }
 }
 
 .brand-with-video {
-  min-width: 360px;
+  min-width: clamp(128px, 12vw, 190px);
   gap: 0;
   justify-content: flex-start;
 }
 
-.brand-video {
-  width: 360px;
-  height: 180px;
-  flex: 0 0 360px;
-  object-fit: fill;
+.brand-logo-img {
+  width: clamp(128px, 12vw, 190px);
+  height: 96px;
+  flex: 0 0 auto;
+  display: block;
+  object-fit: contain;
   object-position: center;
   border-radius: 16px;
-  background: #f8fbff;
+  padding: 8px 14px;
+  background: #fffef2;
   box-shadow: 0 14px 32px rgba(21, 87, 245, .14);
 }
 
-.brand-video-wordmark {
-  width: min(330px, 82vw);
-  height: 116px;
-  object-fit: fill;
+.brand-logo-wordmark {
+  width: min(260px, 72vw);
+  height: 168px;
+  object-fit: contain;
+  object-position: center;
   border-radius: 18px;
-  background: #f8fbff;
+  padding: 10px 18px;
+  background: #fffef2;
+}
+
+.brand-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(128px, 12vw, 190px);
+  min-height: 96px;
+  border-radius: 16px;
+  background: #fffef2;
+  box-shadow: 0 14px 32px rgba(21, 87, 245, .14);
+}
+
+.brand-logo-link img {
+  width: 100%;
+  height: 88px;
+  display: block;
+  object-fit: contain;
+  padding: 6px 12px;
 }
 
 .top-actions {
@@ -3253,12 +3276,12 @@ button, input, select, textarea { font: inherit; }
 }
 
 .dashboard-topbar {
-  min-height: 214px;
+  min-height: 124px;
   height: auto;
   padding: 16px 34px;
   gap: 16px;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   background: rgba(255,255,255,.92);
   border-bottom-color: #dde8f8;
 }
@@ -5005,21 +5028,19 @@ button, input, select, textarea { font: inherit; }
   }
 
   .dashboard-topbar {
-    min-height: 212px;
+    min-height: 118px;
     height: auto;
     padding: 14px 18px;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .dashboard-topbar .brand-with-video {
-    width: 100%;
     min-width: 0;
   }
 
-  .dashboard-topbar .brand-video {
-    width: min(360px, 84vw);
-    height: 174px;
-    flex-basis: min(360px, 84vw);
+  .dashboard-topbar .brand-logo-img {
+    width: min(164px, 46vw);
+    height: 86px;
   }
 
   .dashboard-hero {
@@ -5811,10 +5832,163 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
 }
 
 @media (min-width: 1101px) {
+  .dashboard-shell {
+    padding-bottom: 132px;
+  }
+
+  .dashboard-subpage {
+    padding-bottom: 36px;
+  }
+
   body.has-emergency-rail > .medical-mobile-nav.shared-dashboard-nav {
     left: 306px !important;
     right: 18px !important;
     width: auto;
     max-width: none;
+  }
+}
+
+/* Focused polish for the Vercel/Next version. */
+.emergency-rail-call.is-global strong {
+  font-size: clamp(15px, 1.05vw, 18px);
+  line-height: 1.14;
+  max-width: 172px;
+}
+
+.emergency-rail-call.is-global small {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.welcome-shell {
+  border: 1px solid rgba(198, 216, 243, .72);
+}
+
+.welcome-shell .topbar {
+  align-items: center;
+}
+
+.welcome-shell .brand-with-video {
+  min-width: min(190px, 32vw);
+}
+
+.welcome-shell .brand-logo-img {
+  width: min(190px, 32vw);
+  height: 96px;
+  object-fit: contain;
+  background: #fffef2;
+}
+
+.welcome-copy h1 {
+  text-wrap: balance;
+}
+
+.welcome-copy p {
+  text-wrap: pretty;
+}
+
+.welcome-visual {
+  border: 1px solid rgba(193, 219, 244, .62);
+  box-shadow: 0 24px 64px rgba(39, 88, 149, .12);
+}
+
+.welcome-visual img {
+  transform: none;
+  padding: 16px;
+}
+
+.welcome-feature-card,
+.welcome-control-card,
+.welcome-secondary-btn,
+.welcome-login-btn {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.welcome-feature-card:hover,
+.welcome-secondary-btn:hover,
+.welcome-login-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(21, 87, 245, .42);
+  box-shadow: 0 22px 54px rgba(52, 86, 138, .13);
+}
+
+@media (min-width: 900px) {
+  .welcome-shell .topbar {
+    min-height: 116px;
+    padding: 12px 42px;
+  }
+
+  .welcome-hero {
+    grid-template-columns: minmax(390px, .78fr) minmax(420px, 1fr);
+    gap: clamp(28px, 4vw, 58px);
+    padding: 44px clamp(36px, 4vw, 68px) 28px;
+  }
+
+  .welcome-copy h1 {
+    font-size: clamp(46px, 4.2vw, 72px);
+    max-width: 650px;
+  }
+
+  .welcome-copy p {
+    max-width: 570px;
+  }
+
+  .welcome-actions {
+    width: min(100%, 560px);
+    margin-top: 26px;
+  }
+
+  .welcome-visual {
+    min-height: clamp(390px, 34vw, 510px);
+  }
+
+  .welcome-visual img {
+    min-height: clamp(390px, 34vw, 510px);
+  }
+
+  .welcome-feature-grid {
+    padding: 8px clamp(36px, 4vw, 68px) 22px;
+    gap: 18px;
+  }
+
+  .welcome-feature-card {
+    min-height: 132px;
+    padding: 20px;
+  }
+
+  .welcome-control-card {
+    margin: 12px clamp(36px, 4vw, 68px) 34px;
+  }
+}
+
+@media (max-width: 899px) {
+  .welcome-shell .topbar {
+    min-height: 108px;
+    padding: 12px 22px;
+  }
+
+  .welcome-shell .brand-with-video {
+    min-width: min(158px, 46vw);
+  }
+
+  .welcome-shell .brand-logo-img {
+    width: min(158px, 46vw);
+    height: 82px;
+  }
+
+  .welcome-hero {
+    padding-top: 30px;
+  }
+
+  .welcome-copy h1 {
+    font-size: clamp(40px, 10vw, 58px);
+  }
+
+  .welcome-copy p {
+    font-size: 16px;
+  }
+
+  .welcome-visual img {
+    padding: 10px;
   }
 }

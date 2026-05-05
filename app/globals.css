@@ -92,28 +92,51 @@ button, input, select, textarea { font: inherit; }
 }
 
 .brand-with-video {
-  min-width: 360px;
+  min-width: clamp(128px, 12vw, 190px);
   gap: 0;
   justify-content: flex-start;
 }
 
-.brand-video {
-  width: 360px;
-  height: 180px;
-  flex: 0 0 360px;
-  object-fit: fill;
+.brand-logo-img {
+  width: clamp(128px, 12vw, 190px);
+  height: 96px;
+  flex: 0 0 auto;
+  display: block;
+  object-fit: contain;
   object-position: center;
   border-radius: 16px;
-  background: #f8fbff;
+  padding: 8px 14px;
+  background: #fffef2;
   box-shadow: 0 14px 32px rgba(21, 87, 245, .14);
 }
 
-.brand-video-wordmark {
-  width: min(330px, 82vw);
-  height: 116px;
-  object-fit: fill;
+.brand-logo-wordmark {
+  width: min(260px, 72vw);
+  height: 168px;
+  object-fit: contain;
+  object-position: center;
   border-radius: 18px;
-  background: #f8fbff;
+  padding: 10px 18px;
+  background: #fffef2;
+}
+
+.brand-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(128px, 12vw, 190px);
+  min-height: 96px;
+  border-radius: 16px;
+  background: #fffef2;
+  box-shadow: 0 14px 32px rgba(21, 87, 245, .14);
+}
+
+.brand-logo-link img {
+  width: 100%;
+  height: 88px;
+  display: block;
+  object-fit: contain;
+  padding: 6px 12px;
 }
 
 .top-actions {
@@ -3253,12 +3276,12 @@ button, input, select, textarea { font: inherit; }
 }
 
 .dashboard-topbar {
-  min-height: 214px;
+  min-height: 124px;
   height: auto;
   padding: 16px 34px;
   gap: 16px;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   background: rgba(255,255,255,.92);
   border-bottom-color: #dde8f8;
 }
@@ -5005,21 +5028,19 @@ button, input, select, textarea { font: inherit; }
   }
 
   .dashboard-topbar {
-    min-height: 212px;
+    min-height: 118px;
     height: auto;
     padding: 14px 18px;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .dashboard-topbar .brand-with-video {
-    width: 100%;
     min-width: 0;
   }
 
-  .dashboard-topbar .brand-video {
-    width: min(360px, 84vw);
-    height: 174px;
-    flex-basis: min(360px, 84vw);
+  .dashboard-topbar .brand-logo-img {
+    width: min(164px, 46vw);
+    height: 86px;
   }
 
   .dashboard-hero {
@@ -5848,14 +5869,14 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
 }
 
 .welcome-shell .brand-with-video {
-  min-width: min(340px, 48vw);
+  min-width: min(190px, 32vw);
 }
 
-.welcome-shell .brand-video {
-  width: min(340px, 48vw);
-  height: 132px;
+.welcome-shell .brand-logo-img {
+  width: min(190px, 32vw);
+  height: 96px;
   object-fit: contain;
-  background: rgba(248, 251, 255, .78);
+  background: #fffef2;
 }
 
 .welcome-copy h1 {
@@ -5893,7 +5914,7 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
 
 @media (min-width: 900px) {
   .welcome-shell .topbar {
-    min-height: 156px;
+    min-height: 116px;
     padding: 12px 42px;
   }
 
@@ -5942,17 +5963,17 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
 
 @media (max-width: 899px) {
   .welcome-shell .topbar {
-    min-height: 132px;
+    min-height: 108px;
     padding: 12px 22px;
   }
 
   .welcome-shell .brand-with-video {
-    min-width: min(230px, 58vw);
+    min-width: min(158px, 46vw);
   }
 
-  .welcome-shell .brand-video {
-    width: min(230px, 58vw);
-    height: 104px;
+  .welcome-shell .brand-logo-img {
+    width: min(158px, 46vw);
+    height: 82px;
   }
 
   .welcome-hero {
