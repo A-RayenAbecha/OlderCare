@@ -17,7 +17,7 @@
       <p th:text="${(profile.firstName ?: 'Patient') + ' ' + (profile.surname ?: '')}">Ahmed Rayen Abecha</p>
     </div>
     <div class="medical-mobile-actions">
-      <a class="medical-sos-square" href="/dashboard/sos" aria-label="SOS"><span>*</span><strong>SOS</strong></a>
+      <a class="medical-sos-square" href="/dashboard/sos" aria-label="SOS"><img class="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true"></a>
       <div th:replace="~{fragments/emergency-panel :: emergencyInfoPanel}"></div>
     </div>
   </header>

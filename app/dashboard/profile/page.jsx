@@ -29,7 +29,7 @@ export default async function MedicalProfilePage() {
           <p>{fullName(profile)}</p>
         </div>
         <div className="medical-mobile-actions">
-          <Link className="medical-sos-square" href="/dashboard/sos" aria-label="SOS"><span>*</span><strong>SOS</strong></Link>
+          <Link className="medical-sos-square" href="/dashboard/sos" aria-label="SOS"><img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" /></Link>
           <EmergencyInfoWidget href="/dashboard/emergency-info" />
         </div>
       </header>

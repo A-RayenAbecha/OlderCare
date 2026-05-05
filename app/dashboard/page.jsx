@@ -46,8 +46,7 @@ export default async function DashboardPage({ searchParams }) {
             </div>
             <div className="dashboard-hero-actions">
               <Link className="dashboard-sos-orb" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
-                <span>*</span>
-                <strong>SOS</strong>
+                <img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" />
               </Link>
               <Link className="dashboard-edit-mini-link dashboard-edit-under-sos" href="/profile/setup?step=1">✎ Modifier les données</Link>
             </div>

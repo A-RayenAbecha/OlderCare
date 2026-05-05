@@ -13,7 +13,7 @@
     <strong class="brand brand-with-video"><img class="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare"></strong>
     <div class="top-actions">
       <a class="profile-pill-link" th:href="${cancelUrl ?: '/dashboard'}">Retour</a>
-      <a class="emergency-menu-trigger emergency-page-menu" th:href="${sosUrl ?: '/dashboard/sos'}" aria-label="SOS"><span>*</span></a>
+      <a class="emergency-menu-trigger emergency-page-menu" th:href="${sosUrl ?: '/dashboard/sos'}" aria-label="SOS"><img class="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true"></a>
     </div>
   </div>
   <header class="emergency-info-head emergency-page-head">
@@ -22,7 +22,7 @@
       <h1>Informations d'urgence</h1>
       <p>Consultez rapidement la localisation, les contacts et les urgences les plus proches.</p>
     </div>
-    <a class="emergency-page-sos" th:href="${sosUrl ?: '/dashboard/sos'}"><span>*</span><strong>SOS</strong></a>
+    <a class="emergency-page-sos" th:href="${sosUrl ?: '/dashboard/sos'}"><img class="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true"></a>
   </header>
 
   <div class="emergency-info-grid">

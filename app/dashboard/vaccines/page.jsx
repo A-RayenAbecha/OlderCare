@@ -36,7 +36,7 @@ export default async function VaccinesPage() {
               <p>Remplissez et consultez l'historique vaccinal du patient.</p>
             </div>
             <Link className="dashboard-sos-orb small" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
-              <span>*</span><strong>SOS</strong>
+              <img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" />
             </Link>
           </header>
 

@@ -13,7 +13,7 @@ export default function EmergencyInfo({ bundle, cancelUrl = "/dashboard", sosUrl
         <strong className="brand brand-with-video"><img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" /></strong>
         <div className="top-actions">
           <Link className="profile-pill-link" href={cancelUrl}>Retour</Link>
-          <Link className="emergency-menu-trigger emergency-page-menu" href={sosUrl} aria-label="SOS"><span>*</span></Link>
+          <Link className="emergency-menu-trigger emergency-page-menu" href={sosUrl} aria-label="SOS"><img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" /></Link>
         </div>
       </div>
       <header className="emergency-info-head emergency-page-head">
@@ -22,7 +22,7 @@ export default function EmergencyInfo({ bundle, cancelUrl = "/dashboard", sosUrl
           <h1>Informations d'urgence</h1>
           <p>Consultez rapidement la localisation, les contacts et les urgences les plus proches.</p>
         </div>
-        <Link className="emergency-page-sos" href={sosUrl}><span>*</span><strong>SOS</strong></Link>
+        <Link className="emergency-page-sos" href={sosUrl}><img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" /></Link>
       </header>
       <div className="emergency-info-grid">
         <article className="emergency-info-card emergency-location-card">
