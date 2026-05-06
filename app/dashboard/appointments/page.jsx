@@ -9,10 +9,13 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const Link = ({ href, children, ...props }) => <a href={href} {...props}>{children}</a>;
+const tunisianPhonePattern = "^\\+216\\s?[0-9]{2}\\s?[0-9]{3}\\s?[0-9]{3}$";
+const tunisianPhoneTitle = "Format attendu : +216 23 444 194";
 
-export default async function AppointmentsPage() {
+export default async function AppointmentsPage({ searchParams }) {
   const userId = await requirePatient();
   const { appointments } = await getPatientBundle(userId);
+  const params = await searchParams;
 
   return (
     <>
@@ -34,6 +37,7 @@ export default async function AppointmentsPage() {
               <div className="step-text">Espace de santé personnel</div>
               <h1>Mes rendez-vous</h1>
               <p>Consultez et ajoutez les visites liées à votre dossier.</p>
+              {params?.error && <p className="notice">{params.error}</p>}
             </div>
             <Link className="dashboard-sos-orb small" href="/dashboard/sos" aria-label="Ouvrir le SOS d'urgence">
               <img className="sos-button-img" src="/images/sos-glossy-button.png" alt="" aria-hidden="true" />
@@ -47,7 +51,7 @@ export default async function AppointmentsPage() {
               <div className="field"><label>Spécialité</label><input name="specialty" placeholder="Cardiologie" required /></div>
               <div className="field"><label>Date et heure</label><input type="datetime-local" name="appointmentDate" required /></div>
               <div className="field"><label>Lieu</label><input name="clinicLocation" placeholder="Clinique / hôpital" required /></div>
-              <div className="field"><label>Téléphone</label><input name="phoneContact" placeholder="+216 00 000 000" /></div>
+              <div className="field"><label>Téléphone</label><input type="tel" name="phoneContact" inputMode="tel" autoComplete="tel" placeholder="+216 23 444 194" pattern={tunisianPhonePattern} title={tunisianPhoneTitle} /></div>
               <button className="dashboard-primary-btn">Ajouter le rendez-vous</button>
             </form>
           </section>

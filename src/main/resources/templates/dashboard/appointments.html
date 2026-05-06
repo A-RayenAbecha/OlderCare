@@ -99,7 +99,7 @@
         </div>
         <div class="field">
           <label>T&eacute;l&eacute;phone</label>
-          <input name="phoneContact" placeholder="+216 00 000 000">
+          <input type="tel" name="phoneContact" inputmode="tel" autocomplete="tel" placeholder="+216 23 444 194" pattern="^\+216\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{3}$" title="Format attendu : +216 23 444 194">
         </div>
         <button class="dashboard-primary-btn">Ajouter le rendez-vous</button>
       </form>
@@ -122,7 +122,7 @@
             <strong th:text="${appointment.specialty ?: 'Sp&eacute;cialit&eacute;'}">Cardiologie</strong>
             <p th:text="${appointment.appointmentDate != null ? #temporals.format(appointment.appointmentDate, 'EEEE HH:mm') : 'Date &agrave; confirmer'}">Lundi 14:00</p>
             <small th:text="${appointment.clinicLocation ?: 'Lieu &agrave; confirmer'}">Clinique</small>
-            <a th:if="${appointment.phoneContact != null && !#strings.isEmpty(appointment.phoneContact)}" th:href="${'tel:' + appointment.phoneContact}" th:text="${appointment.phoneContact}">+216 00 000 000</a>
+            <a th:if="${appointment.phoneContact != null && !#strings.isEmpty(appointment.phoneContact)}" th:href="${'tel:' + appointment.phoneContact}" th:text="${appointment.phoneContact}">+216 23 444 194</a>
           </div>
           <span class="dashboard-status-pill" th:text="${appointment.status == 'SCHEDULED' ? 'Planifi&eacute;' : (appointment.status ?: 'Planifi&eacute;')}">Planifi&eacute;</span>
         </article>

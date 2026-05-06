@@ -12,6 +12,8 @@ const Link = ({ href, children, ...props }) => <a href={href} {...props}>{childr
 const nationalities = ["Tunisie", "Algérie", "Maroc", "France", "Italie", "Allemagne", "Espagne", "États-Unis", "Canada", "Albanie", "Autre"];
 const bloodTypes = ["Inconnu", "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"];
 const coverage = ["CNAM", "CNSS", "Privée", "Aucune"];
+const tunisianPhonePattern = "^\\+216\\s?[0-9]{2}\\s?[0-9]{3}\\s?[0-9]{3}$";
+const tunisianPhoneTitle = "Format attendu : +216 23 444 194";
 
 function SetupTop({ title = "Profil de santé" }) {
   return <div className="topbar"><button className="icon-button" type="button">←</button><strong className="top-title">{title}</strong><button className="icon-button">⌘</button></div>;
@@ -37,16 +39,17 @@ export default async function SetupPage({ searchParams }) {
         <section className="content">
           <h1 className="title-lg">Coordonnées et<br />démographie</h1>
           <p className="subtitle">Aidez-nous à compléter votre dossier avec vos informations professionnelles et résidentielles.</p>
+          {params?.error && <p className="notice">{params.error}</p>}
           <form id="civil2" action={saveContactAction} className="form-stack">
             <div className="section-label">■ Emploi et famille</div>
             <div className="field"><label>Profession</label><input name="occupation" defaultValue={contact.occupation || ""} placeholder="ex. ingénieur logiciel" required /></div>
             <div className="field"><label>Nombre d'enfants</label><input type="number" name="numChildren" min="0" defaultValue={contact.num_children || 0} required /></div>
             <div className="field"><label>Couverture sociale</label><select name="socialSecurityType" defaultValue={contact.social_security_type || "CNAM"}>{coverage.map((item) => <option key={item} value={item}>{item}</option>)}</select></div>
             <div className="section-label">☎ Communication</div>
-            <div className="field"><label>Numéro de téléphone</label><input name="phoneNumber" defaultValue={contact.phone_number || ""} placeholder="+216 00 000 000" required /></div>
+            <div className="field"><label>Numéro de téléphone</label><input type="tel" name="phoneNumber" inputMode="tel" autoComplete="tel" defaultValue={contact.phone_number || ""} placeholder="+216 23 444 194" pattern={tunisianPhonePattern} title={tunisianPhoneTitle} required /></div>
             <div className="section-label">⚠ Contacts d'urgence</div>
             <div className="field"><label>Message SOS personnalisé</label><textarea name="sosMessage" defaultValue={profile.sos_message || defaultSosMessage()} placeholder="SOS : j'ai besoin d'une aide immédiate. Veuillez venir à ma position." /></div>
-            <div className="emergency-contact-grid">{paddedContacts.slice(0, 3).map((item, index) => <div className="emergency-contact-form white-card" key={item.id || index}><div className="emergency-contact-title"><strong>Contact {index + 1}</strong>{index === 0 && <span className="soft-pill">Principal</span>}</div><div className="field"><label>Nom complet</label><input name="emergencyName" defaultValue={item.full_name || ""} placeholder="ex. Jean Lefebvre" /></div><div className="field"><label>Lien avec le patient</label><input name="emergencyRelationship" defaultValue={item.relationship || ""} placeholder="ex. Fils, conjointe, voisin" /></div><div className="field"><label>Numéro de téléphone</label><input type="tel" name="emergencyPhone" defaultValue={item.phone_number || ""} placeholder="+216 00 000 000" /></div><div className="field"><label>Lieu de résidence</label><input name="emergencyResidence" defaultValue={item.residence || ""} placeholder="ex. Tunis, La Marsa" /></div></div>)}</div>
+            <div className="emergency-contact-grid">{paddedContacts.slice(0, 3).map((item, index) => <div className="emergency-contact-form white-card" key={item.id || index}><div className="emergency-contact-title"><strong>Contact {index + 1}</strong>{index === 0 && <span className="soft-pill">Principal</span>}</div><div className="field"><label>Nom complet</label><input name="emergencyName" defaultValue={item.full_name || ""} placeholder="ex. Jean Lefebvre" /></div><div className="field"><label>Lien avec le patient</label><input name="emergencyRelationship" defaultValue={item.relationship || ""} placeholder="ex. Fils, conjointe, voisin" /></div><div className="field"><label>Numéro de téléphone</label><input type="tel" name="emergencyPhone" inputMode="tel" autoComplete="tel" defaultValue={item.phone_number || ""} placeholder="+216 23 444 194" pattern={tunisianPhonePattern} title={tunisianPhoneTitle} /></div><div className="field"><label>Lieu de résidence</label><input name="emergencyResidence" defaultValue={item.residence || ""} placeholder="ex. Tunis, La Marsa" /></div></div>)}</div>
             <div className="section-label">⌖ Résidence principale</div>
             <div className="field"><label>Région</label><input name="region" defaultValue={contact.region || ""} placeholder="Grand Tunis" required /></div>
             <div className="field"><label>Code postal</label><input name="postalCode" defaultValue={contact.postal_code || ""} placeholder="1000" required /></div>

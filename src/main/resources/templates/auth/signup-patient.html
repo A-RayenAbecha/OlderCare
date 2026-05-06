@@ -23,7 +23,7 @@
       <div class="field"><label>Profession</label><input name="occupation" required></div>
       <div class="field"><label>Nombre d'enfants</label><input type="number" name="numChildren" min="0" value="0" required></div>
       <div class="field"><label>Couverture sociale</label><select name="socialSecurityType" required><option th:each="coverage : ${socialSecurityOptions}" th:value="${coverage}" th:text="${coverage}">CNAM</option></select></div>
-      <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input name="phoneNumber" required></div>
+      <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="phoneNumber" inputmode="tel" autocomplete="tel" placeholder="+216 23 444 194" pattern="^\+216\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{3}$" title="Format attendu : +216 23 444 194" required></div>
       <div class="field"><label>R&eacute;gion</label><input name="region" required></div>
       <div class="field"><label>Adresse</label><textarea name="address" required></textarea></div>
       <div class="field"><label>Code postal</label><input name="postalCode" required></div>
@@ -33,21 +33,21 @@
           <div class="emergency-contact-title"><strong>Contact 1</strong><span class="soft-pill">Principal</span></div>
           <div class="field"><label>Nom complet</label><input name="emergencyName" placeholder="ex. Jean Lefebvre"></div>
           <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship" placeholder="ex. Fils, conjointe, voisin"></div>
-          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" placeholder="+216 00 000 000"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" inputmode="tel" autocomplete="tel" placeholder="+216 23 444 194" pattern="^\+216\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{3}$" title="Format attendu : +216 23 444 194"></div>
           <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence" placeholder="ex. Tunis, La Marsa"></div>
         </div>
         <div class="emergency-contact-form white-card">
           <div class="emergency-contact-title"><strong>Contact 2</strong></div>
           <div class="field"><label>Nom complet</label><input name="emergencyName"></div>
           <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship"></div>
-          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" inputmode="tel" autocomplete="tel" placeholder="+216 23 444 194" pattern="^\+216\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{3}$" title="Format attendu : +216 23 444 194"></div>
           <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence"></div>
         </div>
         <div class="emergency-contact-form white-card">
           <div class="emergency-contact-title"><strong>Contact 3</strong></div>
           <div class="field"><label>Nom complet</label><input name="emergencyName"></div>
           <div class="field"><label>Lien avec le patient</label><input name="emergencyRelationship"></div>
-          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone"></div>
+          <div class="field"><label>Num&eacute;ro de t&eacute;l&eacute;phone</label><input type="tel" name="emergencyPhone" inputmode="tel" autocomplete="tel" placeholder="+216 23 444 194" pattern="^\+216\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{3}$" title="Format attendu : +216 23 444 194"></div>
           <div class="field"><label>Lieu de r&eacute;sidence</label><input name="emergencyResidence"></div>
         </div>
       </div>

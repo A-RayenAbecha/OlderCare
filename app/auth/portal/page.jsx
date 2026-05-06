@@ -19,9 +19,7 @@ export default async function PortalPage({ searchParams }) {
       <main className="app-shell">
         <div className="topbar">
           <Link className="icon-button" href="/auth/logout">←</Link>
-        <strong className="brand brand-with-video">
-          <img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" />
-        </strong>
+          <span />
           <div className="bracelet-status-pill"><span /> Bracelet connecté</div>
         </div>
         <section className="content portal-access-page">

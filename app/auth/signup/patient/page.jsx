@@ -28,6 +28,8 @@ const nationalities = countryCodes
   .sort((a, b) => a.localeCompare(b, "fr"));
 const bloodTypes = ["Inconnu", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const coverage = ["CNAM", "CNSS", "Privé", "Aucune"];
+const tunisianPhonePattern = "^\\+216\\s?[0-9]{2}\\s?[0-9]{3}\\s?[0-9]{3}$";
+const tunisianPhoneTitle = "Format attendu : +216 23 444 194";
 
 export default async function PatientSignupPage({ searchParams }) {
   await redirectIfLoggedIn();
@@ -59,7 +61,7 @@ export default async function PatientSignupPage({ searchParams }) {
           <div className="field"><label>Profession</label><input name="occupation" required /></div>
           <div className="field"><label>Nombre d'enfants</label><input type="number" name="numChildren" min="0" defaultValue="0" required /></div>
           <div className="field"><label>Couverture sociale</label><select name="socialSecurityType" required>{coverage.map((item) => <option key={item} value={item}>{item}</option>)}</select></div>
-          <div className="field"><label>Numéro de téléphone</label><input name="phoneNumber" required /></div>
+          <div className="field"><label>Numéro de téléphone</label><input type="tel" name="phoneNumber" inputMode="tel" autoComplete="tel" placeholder="+216 23 444 194" pattern={tunisianPhonePattern} title={tunisianPhoneTitle} required /></div>
           <div className="field"><label>Région</label><input name="region" required /></div>
           <div className="field"><label>Adresse</label><textarea name="address" required /></div>
           <div className="field"><label>Code postal</label><input name="postalCode" required /></div>
@@ -71,7 +73,7 @@ export default async function PatientSignupPage({ searchParams }) {
                 <div className="emergency-contact-title"><strong>Contact {slot}</strong>{slot === 1 && <span className="soft-pill">Principal</span>}</div>
                 <div className="field"><label>Nom complet</label><input name="emergencyName" placeholder="ex. Jean Lefebvre" /></div>
                 <div className="field"><label>Lien avec le patient</label><input name="emergencyRelationship" placeholder="ex. Fils, conjointe, voisin" /></div>
-                <div className="field"><label>Numéro de téléphone</label><input type="tel" name="emergencyPhone" placeholder="+216 00 000 000" /></div>
+                <div className="field"><label>Numéro de téléphone</label><input type="tel" name="emergencyPhone" inputMode="tel" autoComplete="tel" placeholder="+216 23 444 194" pattern={tunisianPhonePattern} title={tunisianPhoneTitle} /></div>
                 <div className="field"><label>Lieu de résidence</label><input name="emergencyResidence" placeholder="ex. Tunis, La Marsa" /></div>
               </div>
             ))}

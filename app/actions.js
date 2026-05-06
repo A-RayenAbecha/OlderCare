@@ -83,7 +83,11 @@ export async function saveIdentityAction(formData) {
 
 export async function saveContactAction(formData) {
   const userId = await requirePatient();
-  await updateContactAndSos(userId, formData);
+  try {
+    await updateContactAndSos(userId, formData);
+  } catch (error) {
+    redirect(`/profile/setup?step=2&error=${encodedError(error.message)}`);
+  }
   redirect("/dashboard");
 }
 
@@ -101,7 +105,11 @@ export async function updateMedicationAction(formData) {
 
 export async function addAppointmentAction(formData) {
   const userId = await requirePatient();
-  await addAppointment(userId, formData);
+  try {
+    await addAppointment(userId, formData);
+  } catch (error) {
+    redirect(`/dashboard/appointments?error=${encodedError(error.message)}`);
+  }
   redirect("/dashboard/appointments");
 }
 
