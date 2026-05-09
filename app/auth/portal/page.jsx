@@ -16,7 +16,7 @@ export default async function PortalPage({ searchParams }) {
   return (
     <>
       <EmergencyRail />
-      <main className="app-shell">
+      <main className="app-shell auth-shell portal-shell">
         <div className="topbar">
           <Link className="icon-button" href="/auth/logout">←</Link>
           <span />

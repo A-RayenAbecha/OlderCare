@@ -36,7 +36,7 @@ export default async function PatientSignupPage({ searchParams }) {
   const params = await searchParams;
 
   return (
-    <main className="app-shell">
+    <main className="app-shell auth-shell signup-shell">
       <div className="topbar">
         <Link className="icon-button" href="/auth/welcome">←</Link>
         <strong>Inscription patient</strong>

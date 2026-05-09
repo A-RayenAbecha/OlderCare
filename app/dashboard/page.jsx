@@ -24,7 +24,7 @@ export default async function DashboardPage({ searchParams }) {
   return (
     <>
       <EmergencyRail />
-      <main className="app-shell dashboard-shell">
+      <main className="app-shell dashboard-shell dashboard-home-shell">
         <div className="topbar dashboard-topbar">
           <strong className="brand brand-with-video">
             <img className="brand-logo-img" src="/images/oldercare-logo-transparent.gif" alt="OlderCare" />

@@ -25,7 +25,7 @@ export default async function WelcomePage() {
             <div className="welcome-secure-line"><span>🛡</span> Sécurisé&nbsp; •&nbsp; Privé&nbsp; •&nbsp; Toujours accessible</div>
           </div>
           <div className="welcome-visual" aria-hidden="true">
-            <img src="/images/medical-care-bg.png" alt="" />
+            <img src="/images/oldercare-welcome-family.jfif" alt="" />
           </div>
         </section>
         <section className="welcome-feature-grid" aria-label="Avantages OlderCare">

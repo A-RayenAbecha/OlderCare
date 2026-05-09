@@ -6078,3 +6078,140 @@ body > .medical-mobile-nav.shared-dashboard-nav span {
     height: 84px;
   }
 }
+
+/* Theme imagery: subtle page-specific medical backgrounds, excluding welcome and red SOS screens. */
+.auth-shell,
+.profile-setup-shell,
+.dashboard-shell,
+.medical-fiche-shell,
+.emergency-info-page-body {
+  --page-bg-image: url("/images/bg-health-records.png");
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.90), rgba(246,250,255,.86)),
+    var(--page-bg-image) center / cover no-repeat;
+}
+
+.auth-shell::before,
+.profile-setup-shell::before,
+.dashboard-shell::before,
+.medical-fiche-shell::before,
+.emergency-info-page-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.70), rgba(247,251,255,.82)),
+    var(--page-bg-image) center / cover no-repeat;
+  opacity: .92;
+}
+
+.auth-login-shell,
+.portal-shell,
+.signup-shell,
+.profile-setup-shell {
+  --page-bg-image: url("/images/bg-health-records.png");
+}
+
+.dashboard-home-shell,
+.readonly-dashboard-shell {
+  --page-bg-image: url("/images/bg-dashboard-care.png");
+}
+
+.medications-shell {
+  --page-bg-image: url("/images/bg-medications.png");
+}
+
+.appointments-shell {
+  --page-bg-image: url("/images/bg-appointments.png");
+}
+
+.vaccines-shell {
+  --page-bg-image: url("/images/bg-vaccines.png");
+}
+
+.medical-fiche-shell {
+  --page-bg-image: url("/images/bg-profile-record.png");
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(246,250,255,.82)),
+    var(--page-bg-image) center / cover no-repeat;
+}
+
+.emergency-info-page-body {
+  --page-bg-image: url("/images/bg-emergency-map.png");
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(247,250,255,.80)),
+    var(--page-bg-image) center / cover no-repeat;
+}
+
+.auth-shell .topbar,
+.profile-setup-shell .topbar,
+.dashboard-shell .topbar,
+.dashboard-card,
+.medical-card,
+.portal-card,
+.white-card,
+.form-panel,
+.bottom-actions {
+  backdrop-filter: blur(16px);
+}
+
+.auth-shell .topbar,
+.profile-setup-shell .topbar,
+.dashboard-shell .topbar {
+  background: rgba(255,255,255,.82);
+}
+
+.dashboard-card,
+.medical-card,
+.portal-card,
+.white-card,
+.form-panel {
+  background: rgba(255,255,255,.88);
+  border-color: rgba(197, 217, 245, .76);
+}
+
+.welcome-visual {
+  background: #fff;
+}
+
+.welcome-visual img {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  object-position: center;
+  padding: 0 !important;
+  transform: none !important;
+  border-radius: inherit;
+}
+
+.welcome-visual::after {
+  background:
+    linear-gradient(90deg, rgba(10,22,61,.06), transparent 46%),
+    radial-gradient(circle at 80% 10%, rgba(255,255,255,.20), transparent 14rem);
+}
+
+@media (min-width: 900px) {
+  .welcome-visual img {
+    min-height: clamp(390px, 34vw, 510px);
+  }
+}
+
+@media (max-width: 899px) {
+  .auth-shell::before,
+  .profile-setup-shell::before,
+  .dashboard-shell::before,
+  .medical-fiche-shell::before,
+  .emergency-info-page-body::before {
+    background-position: center top;
+    opacity: .84;
+  }
+
+  .welcome-visual img {
+    min-height: 300px;
+  }
+}

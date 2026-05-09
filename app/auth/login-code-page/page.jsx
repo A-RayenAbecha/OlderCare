@@ -6,7 +6,7 @@ export default async function LoginCodePage({ searchParams }) {
   const params = await searchParams;
 
   return (
-    <main className="app-shell">
+    <main className="app-shell auth-shell auth-login-shell">
       <div className="topbar">
         <Link className="icon-button" href="/auth/welcome">←</Link>
         <strong>Connexion sécurisée</strong>
